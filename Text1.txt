@@ -1,7 +1,0 @@
-0 - Probando un texto de archivo, asaras
-1 - Probando un Archivo de texto, Sarasa
-2 - Otra linea De texto
-3 - Hola hola Hola
-4 - Mas Pesto
-5 - Hola 1234 hola
-6 - Texto texto Resto hola Que Tal
