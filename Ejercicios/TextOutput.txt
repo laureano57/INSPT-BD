@@ -1,0 +1,4 @@
+0 - Probando un texto de archivo, asaras
+2 - Otra linea de texto
+4 - Mas texto
+6 - Texto texto texto hola hola
