@@ -1,0 +1,7 @@
+Ejercicios Tipo Parcial de Archivos de Texto
+
+Dado el archivo “texto.txt”, se pide generar un programa que permita contar la cantidad de palabras por renglón que comiencen con una vocal, convertir las mismas a mayúsculas y almacenar el texto modificado en el archivo “destino.txt”. 
+
+Dado el archivo “texto.txt”, generar un programa que permita convertir a mayúscula la palabra más larga de cada renglón, almacenado en el texto modificado en el archivo “destino1.txt”.    
+
+Dado el archivo “texto.txt”, generar un programa que permita ingresar el Nº de Renglón y el Nº de palabra de ese renglón y convertir la misma mayúscula almacenando el archivo modificado en “destino2.txt”. 
