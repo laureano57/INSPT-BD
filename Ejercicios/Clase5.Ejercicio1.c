@@ -1,7 +1,15 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<conio.h>
-#include<string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Linux o windows
+#include <ncurses.h>
+// #include<conio.h>
+
+// Linux o windows
+#define CLEAR "clear"
+// #define CLEAR "cls"
+
 #define p printf
 #define s scanf
 #define BIN_FILE_NAME "Clase5.Ejercicio1.Choferes.dat"
@@ -14,11 +22,18 @@ typedef struct chofer {
     int activo;
 } chofer;
 
+void clearStdin(void) {
+    int c;
+    do c = getchar();
+    while (c != '\n' && c != EOF);
+}
+
 // Headers
 void cargarArchivo(char archivoTexto[], char archivoDb[]);
 void mostrar(char filename[]);
 void bajarLegajo(int legajo, char fileName[]);
 void activarLegajo(int legajo, char fileName[]);
+void renombrarLegajo(int legajo, char fileName[]);
 void editarLegajos(char fileName[]);
 void menuPrincipal();
 
@@ -75,8 +90,11 @@ void cargarArchivo(char archivoTexto[], char archivoDb[]) {
     fclose(dbFp);
     fclose(textoFp);
 
-    system("cls");
+    system(CLEAR);
     p("Archivo cargado exitosamente");
+    clearStdin();
+    clearStdin();
+    getch();
     getch();
 }
 
@@ -85,7 +103,7 @@ void mostrar(char filename[]) {
 	FILE * fp;
 	fp = fopen(filename, "rb");
 	rewind(fp);
-    system("cls");
+    system(CLEAR);
 
 	p("######################## Tabla de choferes ########################");
 	p("\n\n%-10s%-30s%-20s%-10s\n", "Codigo", "Chofer", "Kilometros", "Activo");
@@ -121,7 +139,7 @@ void bajarLegajo(int legajo, char fileName[]) {
     if (!existe) {
         p("\nEl legajo ingresado no existe");
     } else {
-        system("cls");
+        system(CLEAR);
         p("######################## Chofer eliminado ########################");
         p("\n\n%-10s%-30s%-20s\n", "Codigo", "Chofer", "Kilometros");
         p("\n%-10d%-30s%-20d",chofReg.codigo, chofReg.nombre, chofReg.kilometros);
@@ -158,8 +176,8 @@ void renombrarLegajo(int legajo, char fileName[]) {
     int existe = 0;
     char nombre[30];
 
-    system("cls");
-    fflush(stdin);
+    system(CLEAR);
+    clearStdin();
     p("Ingrese un nuevo nombre para el legajo: ");
     s("%[^\n]", nombre);
 
@@ -185,11 +203,11 @@ void editarLegajos(char fileName[]) {
     int existe = 0, legajo;
     int opt;
 
-    system("cls");
+    system(CLEAR);
     p("################### Modificar Legajo ###################\n");
     p("\nIngrese un numero de legajo: ");
     s("%d", &legajo);
-    system("cls");
+    system(CLEAR);
 
     p("################### Modificar Legajo ###################\n");
     p("\n1 - Desactivar legajo");
@@ -219,10 +237,10 @@ void editarLegajos(char fileName[]) {
 }
 
 void menuPrincipal() {
-    int opt;
+    int opt = 1;
 
     while(opt != 0) {
-        system("cls");
+        system(CLEAR);
         p("####################### CHOFERES #######################\n");
         p("\nMenu principal");
         p("\n1 - Cargar choferes desde archivo");
@@ -249,7 +267,6 @@ void menuPrincipal() {
                 return;
         }
     }
-
 }
 
 int main(){

@@ -1,8 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
-//#include <ncurses.h>
-#include <conio.h>
 #include <string.h>
+
+// Linux o windows
+#include <ncurses.h>
+// #include <conio.h>
+
+// Linux o windows
+#define CLEAR "clear"
+// #define CLEAR "cls"
 
 #define p printf
 #define s scanf
@@ -77,8 +83,7 @@ void cargarArticulos(char fileName[]) {
 
     fseek(fp, 0, SEEK_END);
 
-//    system("clear");
-    system("cls");
+    system(CLEAR);
 
     do {
         p("##### Cargar articulo #####\n");
@@ -112,22 +117,19 @@ void cargarArticulos(char fileName[]) {
             fwrite(&reg, sizeof(reg), 1, fp);
 
             clearStdin();
-//            system("clear");
-            system("cls");
+            system(CLEAR);
         } else {
             p("El articulo %d ya se encuentra cargado\n\n", codArt);
         }
 
         p("Para terminar ingrese 0, para continuar ingrese 1\n");
         s("%d", &seguir);
-    //    system("clear");
-        system("cls");
+        system(CLEAR);
     } while (seguir != 0);
 
     fclose(fp);
 
-//    system("clear");
-    system("cls");
+    system(CLEAR);
 
     menuPrincipal();
 }
@@ -144,8 +146,7 @@ void cargarClientes(char fileName[]) {
         fp = fopen(fileName, "rb+");
     }
 
-//    system("clear");
-    system("cls");
+    system(CLEAR);
 
     do {
         p("##### Cargar cliente #####\n");
@@ -179,22 +180,19 @@ void cargarClientes(char fileName[]) {
             fwrite(&reg, sizeof(reg), 1, fp);
 
             clearStdin();
-        //    system("clear");
-            system("cls");
+            system(CLEAR);
         } else {
             p("El cliente No. %d ya fue ingresado\n", codCli);
         }
 
         p("Para terminar ingrese 0, para continuar ingrese 1\n");
         s("%d", &seguir);
-    //    system("clear");
-        system("cls");
+        system(CLEAR);
     } while (seguir != 0);
 
     fclose(fp);
 
-//    system("clear");
-    system("cls");
+    system(CLEAR);
 
     menuPrincipal();
 }
@@ -204,8 +202,7 @@ void mostrarArticulos(char fileName[]) {
     fp = fopen(fileName, "rb+");
     regart reg;
 
-//    system("clear");
-    system("cls");
+    system(CLEAR);
 
     // Header
     p("#################### Listado de articulos ####################\n\n");
@@ -229,8 +226,7 @@ void mostrarClientes(char fileName[]) {
     fp = fopen(fileName, "rb+");
     regcli reg;
 
-//    system("clear");
-    system("cls");
+    system(CLEAR);
 
     // Header
     p("#################### Listado de clientes ####################\n\n");
@@ -254,8 +250,7 @@ void mostrarFacturas(char fileName[]) {
     fp = fopen(fileName, "rb");
     regfact reg;
 
-//    system("clear");
-    system("cls");
+    system(CLEAR);
 
     if (!fileExist(fp, fileName)) return;
 
@@ -296,8 +291,7 @@ void facturar(char articulosFile[], char clientesFile[], char facturasFile[]) {
 
 
     do {
-    //    system("clear");
-        system("cls");
+        system(CLEAR);
         p("################### Cargar Factura #####################");
         p("\nIngrese el numero de factura o 0 para salir: ");
         s("%d", &numFact);
@@ -318,8 +312,7 @@ void facturar(char articulosFile[], char clientesFile[], char facturasFile[]) {
                 clearStdin();
                 getch();
                 getch();
-            //    system("clear");
-                system("cls");
+                system(CLEAR);
                 continue;
             } else {
                 rFact.cod = numFact;
@@ -347,14 +340,12 @@ void facturar(char articulosFile[], char clientesFile[], char facturasFile[]) {
                 clearStdin();
                 getch();
                 getch();
-            //    system("clear");
-                system("cls");
+                system(CLEAR);
                 continue;
             }
             do {
                 // Facturar multiples articulos
-            //    system("clear");
-                system("cls");
+                system(CLEAR);
                 p("#################### Agregar productos ####################");
                 p("\nFactura No. %d - Cliente: %s\n\n", rFact.cod, rFact.nom_cli);
 
@@ -439,8 +430,7 @@ void menuListados() {
 
 
     do {
-    //    system("clear");
-        system("cls");
+        system(CLEAR);
         p("#################### LISTADOS ####################\n\n");
         p("1- LISTADO DE ARTICULOS\n");
         p("2- LISTADO DE CLIENTES\n");
@@ -472,8 +462,7 @@ void menuListados() {
 void menuAltas() {
     int opt;
 
-//    system("clear");
-    system("cls");
+    system(CLEAR);
 
     do {
         p("#################### ALTAS ####################\n\n");
@@ -502,8 +491,7 @@ void menuAltas() {
 void menuPrincipal() {
     int opt;
 
-//    system("clear");
-    system("cls");
+    system(CLEAR);
 
     do {
         p("#################### MENU PRINCIPAL ####################\n\n");
