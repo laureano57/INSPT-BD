@@ -1,7 +1,7 @@
 Al igual que un automata finito un automata de pila cuenta
 con un flujo de entrada y un flujo de control que puede encontrarse
 en uno de entre un numero finito de estados
-UNO de estos estados se designa como el inicial
+Uno de estos estados se designa como el inicial
 y por lo menos un estado es de aceptacion
 La principal diferencia es que los automatas de pila
 cuentan con una pila en donde pueden almacenar
