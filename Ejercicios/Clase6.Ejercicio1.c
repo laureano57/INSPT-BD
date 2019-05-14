@@ -178,7 +178,6 @@ void capitalizarYContar(char txtOrig[], char txtMod[]) {
 
     int count, i;
 
-    char lineaCap[100];
     char linea[100];
 
     // Abro archivo original
@@ -193,15 +192,14 @@ void capitalizarYContar(char txtOrig[], char txtMod[]) {
 
         // Inicializamos variables
         count = 0, i = 0;
-        memset(lineaCap, 0, sizeof lineaCap); // Asigna 0 a todos los elementos del array lineaCap
 
         // Lee hasta el final de la linea, caracter por caracter
         while (linea[i] != '\0') {
 
             // Si el caracter corriente es un espacio, lo saltea
             if (linea[i] == ' '){
-                lineaCap[i] = linea[i];
-                i++;
+                fputc(linea[i], fpOut);
+                p("%c", linea[i]);
 
             } else {
 
@@ -209,38 +207,47 @@ void capitalizarYContar(char txtOrig[], char txtMod[]) {
                 // un espacio, es la primer letra de una palabra
                 if ((i == 0) || (linea[i-1] && linea[i-1] == ' ')) {
                     switch(linea[i]) {
-                        // Vocales
+                        // Vocales minusculas
                         case 97:
                         case 101:
                         case 105:
                         case 111:
                         case 117:
                             // Si es vocal minuscula, la capitaliza y cuenta
-                            lineaCap[i] = linea[i] - 32;
-                            count++; i++;
+                            fputc(linea[i]-32, fpOut);
+                            p("%c", linea[i]-32);
+                            count++;
                             break;
+                        // Vocales mayusculas
+                        case 65:
+                        case 69:
+                        case 73:
+                        case 79:
+                        case 85:
+                            // Si es vocal mayuscula, la cuenta
+                            fputc(linea[i], fpOut);
+                            p("%c", linea[i]);
+                            count++;
+                            break;
+                        
                         default:
                             // Sino copia como esta
-                            lineaCap[i] = linea[i];
-                            i++;
+                            fputc(linea[i], fpOut);
+                            p("%c", linea[i]);
                             break;
                     }
 
                 } else {
 
                     // Si no es la primera letra de una palabra, copia como esta
-                    lineaCap[i] = linea[i];
-                    i++;
+                    fputc(linea[i], fpOut);
+                    p("%c", linea[i]);
                 }
             }
+            i++;
         }
-        
-        // Imprimo resultado
-        p("%s\n", lineaCap);
         p("Cantidad de vocales en esta linea: %d\n\n", count);
         
-        // Guardo
-        fputs(lineaCap, fpOut);
     }
 
     fclose(fpIn);
@@ -251,7 +258,17 @@ void capitalizarYContar(char txtOrig[], char txtMod[]) {
 int main(){
     // palabrasMasLargasMayusculas(TXT_ORIG, TXT_MOD);
     // capitalizarYContar(TXT_ORIG, TXT_MOD);
-    palabraLineaMayuscula(TXT_ORIG, TXT_MOD, 4, 1);
+    // palabraLineaMayuscula(TXT_ORIG, TXT_MOD, 4, 1);
+
+    char poronga[] = "esto es una poronga";
+    char *ptr = poronga;
+    char *token;
+
+
+    while ((token = strtok(ptr, " ")) != NULL) {
+        ptr = NULL;
+        p("|%s|", token);
+    }
 
     getch();
     return 0;
