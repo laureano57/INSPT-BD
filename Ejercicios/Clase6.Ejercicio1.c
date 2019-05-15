@@ -154,8 +154,7 @@ void palabrasMasLargasMayusculas(char txtOrig[], char txtMod[]) {
     while(fgets(linea, 100, fpIn)) {
 
         // Obtengo posicion de inicio y fin de la palabra mas larga
-        int *posPointer = posicionPalabraMasLarga(linea);
-        int posiciones[2] = {posPointer[0], posPointer[1]};
+        int posiciones[2] = {posicionPalabraMasLarga(linea)[0], posicionPalabraMasLarga(linea)[1]};
 
         // Copio toda la linea y convierto la palabra mas larga a mayusculas
         strcpy(ret, linea);
@@ -311,10 +310,10 @@ void mayusculasPalabrasVocales(char txtOrig[], char txtDest[]) {
 }
 
 int main(){
-    // palabrasMasLargasMayusculas(TXT_ORIG, TXT_MOD);
+    palabrasMasLargasMayusculas(TXT_ORIG, TXT_MOD);
     // capitalizarYContar(TXT_ORIG, TXT_MOD);
     // palabraLineaMayuscula(TXT_ORIG, TXT_MOD, 4, 1);
-    mayusculasPalabrasVocales(TXT_ORIG, TXT_MOD);
+    // mayusculasPalabrasVocales(TXT_ORIG, TXT_MOD);
     getch();
     return 0;
 }
