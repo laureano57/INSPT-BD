@@ -255,21 +255,66 @@ void capitalizarYContar(char txtOrig[], char txtMod[]) {
 }
 
 
+void mayusculasPalabrasVocales(char txtOrig[], char txtDest[]) {
+    FILE *fpOrig, *fpDest;
+    
+    fpOrig = fopen(txtOrig, "r");
+    fpDest = fopen(txtDest, "w");
+
+    char linea[100];
+    int i;
+    // Leo una linea mientras siga habiendo lineas en el archivo
+    while (fgets(linea, 100, fpOrig)) {
+        i = 0;
+        // Leo una letra mientras sigan habiendo letras en la linea
+        while(linea[i]) {
+            // Si la letra es una vocal...
+            switch(linea[i]) {
+                case 'a':
+                case 'e':
+                case 'i':
+                case 'o':
+                case 'u':
+                case 'A':
+                case 'E':
+                case 'I':
+                case 'O':
+                case 'U':
+                    // ... y si es la primera letra de la linea o si la letra anterior existe y es un espacio...
+                    if ((i == 0) || (linea[i-1] && linea[i-1] == ' ')) {
+                        // ... leo todas las letras de la linea hasta encontrarme un espacio, un \0 o un \n:
+                        while((linea[i] != ' ') && linea[i] != '\0' && linea[i] != '\n') {
+                            // Si la letra en ASCII es mayor que 97, es minuscula, entonces
+                            // la imprimo y guardo en mayuscula
+                            if (linea[i] >= 97) {
+                                p("%c", linea[i]-32);
+                                fputc(linea[i]-32, fpDest);
+                            // Sino, es una mayuscula, la imprimo y la guardo tal cual esta
+                            } else {
+                                p("%c", linea[i]);
+                                fputc(linea[i], fpDest);
+                            }
+                            i++;
+                        }
+                    } 
+            }
+            // Si la primer letra de la palabra no es una vocal, imprimo y guardo tal cual
+            p("%c", linea[i]);
+            fputc(linea[i], fpDest);
+
+            i++;
+        }
+    }
+    // Bajamos la persiana
+    fclose(fpOrig);
+    fclose(fpDest);
+}
+
 int main(){
     // palabrasMasLargasMayusculas(TXT_ORIG, TXT_MOD);
     // capitalizarYContar(TXT_ORIG, TXT_MOD);
     // palabraLineaMayuscula(TXT_ORIG, TXT_MOD, 4, 1);
-
-    char poronga[] = "esto es una poronga";
-    char *ptr = poronga;
-    char *token;
-
-
-    while ((token = strtok(ptr, " ")) != NULL) {
-        ptr = NULL;
-        p("|%s|", token);
-    }
-
+    mayusculasPalabrasVocales(TXT_ORIG, TXT_MOD);
     getch();
     return 0;
 }
