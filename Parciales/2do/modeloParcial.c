@@ -1,4 +1,5 @@
-// Un estudio de arquitectura ingresa datos de inspecciones de obra de profesionales de proyectos
+// Un estudio de arquitectura ingresa datos de inspecciones de obra de
+// profesionales de proyectos
 
 // Datos de ingreso:
 // Numero de inspeccion
@@ -6,11 +7,14 @@
 // Cantidad de horas
 // Nombre del profesional
 
-// En caso de existir el profesional debera omitir el ingreso de datos el nombre del mismo
+// En caso de existir el profesional debera omitir el ingreso de datos el nombre
+// del mismo
 
 // Se pide:
-// Las inspecciones se cargan de a una por vez, pudiendo un mismo profesional realizar varias inspecciones
-// El honorario (sueldo) de cada profesional se calcula con el valor de hora de $250
+// Las inspecciones se cargan de a una por vez, pudiendo un mismo profesional
+// realizar varias inspecciones
+// El honorario (sueldo) de cada profesional se calcula con el valor de hora de
+// $250
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -76,10 +80,13 @@ void cargarInspecciones(char fileName[]) {
     p("\n- Codigo de profesional: ");
     s("%d", &codProf);
     clearStdin();
-    // Primero busco el profesional, si existe tomo los datos y quedo parado en el la posicion de memoria donde
-    // empieza el struct del profesional buscado y devuelvo el struct de dicho prof.
+    // Primero busco el profesional, si existe tomo los datos y quedo parado en
+    // el la posicion de memoria donde
+    // empieza el struct del profesional buscado y devuelvo el struct de dicho
+    // prof.
     newReg = buscarProfesional(codProf, &fp);
     // Si no existe, lo carga de cero
+    // if (newReg.cod_prof != codProf) {
     if (newReg.cod_prof != codProf) {
       newReg.cod_prof = codProf;
       p("\n- Nombre del profesional: ");
@@ -91,7 +98,7 @@ void cargarInspecciones(char fileName[]) {
       clearStdin();
       newReg.cant_insp = 1;
       newReg.sueldo = newReg.horas * 250;
-    // Si existe, sumo horas, sumo cantidad de inspecciones, recalculo sueldo
+      // Si existe, sumo horas, sumo cantidad de inspecciones, recalculo sueldo
     } else {
       p("\n- Cantidad de horas: ");
       s("%d", &auxHoras);
@@ -111,19 +118,25 @@ void cargarInspecciones(char fileName[]) {
   };
 
   fclose(fp);
-
 }
 
 void mostrarRegistros(char fileName[]) {
   registro auxReg;
   FILE *fp;
   fp = fopen(fileName, "rb");
-
+  if (fp == NULL) {
+    p("Archivo vacio!\n");
+    getchar();
+    return;
+  }
   system(CLEAR);
-  p("######################### LISTADO DE PROFESIONALES #########################\n\n");
-  p("%-10s %-30s %-15s %-10s %-10s\n", "Cod.2", "Nombre", "Inspecciones", "Horas", "Sueldo");
-  while(fread(&auxReg, sizeof(registro), 1, fp)) {
-    p("%-10d %-30s %-15d %-10d %-10d\n", auxReg.cod_prof, auxReg.nom_prof, auxReg.cant_insp, auxReg.horas, auxReg.sueldo);
+  p("######################### LISTADO DE PROFESIONALES "
+    "#########################\n\n");
+  p("%-10s %-30s %-15s %-10s %-10s\n", "Cod.", "Nombre", "Inspecciones",
+    "Horas", "Sueldo");
+  while (fread(&auxReg, sizeof(registro), 1, fp)) {
+    p("%-10d %-30s %-15d %-10d %-10d\n", auxReg.cod_prof, auxReg.nom_prof,
+      auxReg.cant_insp, auxReg.horas, auxReg.sueldo);
   }
 
   fclose(fp);
@@ -143,16 +156,17 @@ void menu() {
     p("3- Salir\n");
     p("Opcion: ");
     s("%d", &opt);
+    clearStdin();
 
-    switch(opt) {
-      case 1:
-        system(CLEAR);
-        cargarInspecciones(BIN_FILE_NAME);
-        break;
-      case 2:
-        system(CLEAR);
-        mostrarRegistros(BIN_FILE_NAME);
-        break;
+    switch (opt) {
+    case 1:
+      system(CLEAR);
+      cargarInspecciones(BIN_FILE_NAME);
+      break;
+    case 2:
+      system(CLEAR);
+      mostrarRegistros(BIN_FILE_NAME);
+      break;
     }
   }
 }
@@ -161,5 +175,3 @@ int main() {
   menu();
   return 0;
 }
-
-
