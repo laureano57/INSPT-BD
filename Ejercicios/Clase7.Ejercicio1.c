@@ -18,7 +18,7 @@ void clearStdin(void) {
     while (c != '\n' && c != EOF);
 }
 
-// Para los ejercics 1-3
+// Para los ejercicios 1-3
 // typedef struct elemento {
 // 	int dato;
 // 	struct elemento *sig;
