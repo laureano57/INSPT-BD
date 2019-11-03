@@ -1,0 +1,6 @@
+1,Roberto Gomez,admin1,1234,0,1,
+2,Carlos Rodriguez,prof1,1234,1,1,
+3,Gaston Araujo,alu1,1234,2,1,
+4,Miguel Martin,admin2,1234,0,1,
+5,Daniel Barreto,prof2,1234,1,1,
+6,Horacio Diaz,alu2,1234,2,1,
