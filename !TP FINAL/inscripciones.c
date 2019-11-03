@@ -76,7 +76,8 @@ void menuAdmin();
 void menuAlumno();
 void menuProfesor();
 
-// void materiasCargarDesdeArchivo();
+void cargarDesdeArchivo(char *archivoTexto, tipoEntidad tEntidad);
+
 // void materiaAlta();
 // void materiaBaja(int idMateria);
 // void materiaModificar(int idMateria);
@@ -84,7 +85,6 @@ void materiasListar();
 // void materiaConsultarProfesor(int idMateria);
 // void materiaConsultarAlumnos(int idMateria);
 
-// void usuariosCargarDesdeArchivo(tipoUsuario tipo);
 // void usuarioAlta();
 // void usuarioBaja(int idUsuario);
 // void usuarioModificar(int idUsuario);
@@ -97,8 +97,9 @@ void usuariosListar(tipoUsuario tipo);
 // int seleccionarMateria();
 // int seleccionarUsuario(tipoUsuario tipo);
 
+// Funcion logger para loguear todas las acciones de los usuarios
+// void logger();
 
-void cargarDesdeArchivo(char *archivoTexto, tipoEntidad tEntidad);
 
 // ####################################################################################################################
 // ####                                                  Helpers                                                   ####
