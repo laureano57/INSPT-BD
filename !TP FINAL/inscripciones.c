@@ -1,5 +1,6 @@
 // Librerias
 #include <ctype.h>
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,6 +18,8 @@
 #define MATERIAS_DAT "materias.dat"
 #define MATERIA_PROFESOR_DAT "materia_profesor.dat"
 #define MATERIA_ESTUDIANTE_DAT "materia_estudiante.dat"
+// Archivo de logs
+#define LOG_FILE "logs.txt"
 
 // ####################################################################################################################
 // ####                                              Modelo de datos                                               ####
@@ -69,14 +72,14 @@ typedef struct materiaEstudiante {
 // ####                                               Declaraciones                                                ####
 // ####################################################################################################################
 
-void menuAdmMaterias();
-void menuAdmProfesores();
-void menuAdmAlumnos();
-void menuAdmin();
-void menuAlumno();
-void menuProfesor();
+void menuAdmMaterias(usuario loggedUser);
+void menuAdmProfesores(usuario loggedUser);
+void menuAdmAlumnos(usuario loggedUser);
+void menuAdmin(usuario loggedUser);
+void menuAlumno(usuario loggedUser);
+void menuProfesor(usuario loggedUser);
 
-void cargarDesdeArchivo(char *archivoTexto, tipoEntidad tEntidad);
+void cargarDesdeArchivo(usuario loggedUser, char *archivoTexto, tipoEntidad tEntidad);
 
 // void materiaAlta();
 // void materiaBaja(int idMateria);
@@ -98,7 +101,7 @@ void usuariosListar(tipoUsuario tipo);
 // int seleccionarUsuario(tipoUsuario tipo);
 
 // Funcion logger para loguear todas las acciones de los usuarios
-// void logger();
+void logger(usuario loggedUser, char *action);
 
 
 // ####################################################################################################################
@@ -123,7 +126,7 @@ void clearStdin(void) {
   while (c != '\n' && c != EOF);
 }
 
-void cargarDesdeArchivo(char *archivoTexto, tipoEntidad tEntidad) {
+void cargarDesdeArchivo(usuario loggedUser, char *archivoTexto, tipoEntidad tEntidad) {
   FILE *textoFp;
   FILE *dbFp;
 
@@ -145,6 +148,10 @@ void cargarDesdeArchivo(char *archivoTexto, tipoEntidad tEntidad) {
   int id, idMateria, idProfesor, idEstudiante;
   int tipo, estado;
   char nombre[30];
+
+  // Variables para el log
+  char nombreTabla[30];
+  char logMessage[100];
 
   textoFp = fopen(archivoTexto, "r");
   dbFp = fopen(archivoDb, "wb+");
@@ -182,6 +189,7 @@ void cargarDesdeArchivo(char *archivoTexto, tipoEntidad tEntidad) {
         token = strtok(NULL, ",");
         usuarioReg.estado = atoi(token);
 
+        strcpy(nombreTabla, "usuario");
         fwrite(&usuarioReg, sizeof(usuarioReg), 1, dbFp);
     }
     // Parseo la linea segun tipo de entidad
@@ -194,6 +202,7 @@ void cargarDesdeArchivo(char *archivoTexto, tipoEntidad tEntidad) {
         token = strtok(NULL, ",");
         materiaReg.estado = atoi(token);
 
+        strcpy(nombreTabla, "materia");
         fwrite(&materiaReg, sizeof(materiaReg), 1, dbFp);
     }
     // Parseo la linea segun tipo de entidad
@@ -206,6 +215,7 @@ void cargarDesdeArchivo(char *archivoTexto, tipoEntidad tEntidad) {
       token = strtok(NULL, ",");
       materiaProfesorReg.idProfesor = atoi(token);
 
+      strcpy(nombreTabla, "materia_profesor");
       fwrite(&materiaProfesorReg, sizeof(materiaProfesorReg), 1, dbFp);
     }
     // Parseo la linea segun tipo de entidad
@@ -218,9 +228,20 @@ void cargarDesdeArchivo(char *archivoTexto, tipoEntidad tEntidad) {
       token = strtok(NULL, ",");
       materiaEstudianteReg.idEstudiante = atoi(token);
 
+      strcpy(nombreTabla, "materia_estudiante");
       fwrite(&materiaEstudianteReg, sizeof(materiaEstudianteReg), 1, dbFp);
     }
   };
+
+  // Armo el mensaje para el log
+  strcpy(logMessage, "Se cargo la tabla '");
+  strcat(logMessage, nombreTabla);
+  strcat(logMessage, "' con el archivo '");
+  strcat(logMessage, archivoTexto);
+  strcat(logMessage, "'");
+
+  // Logueo mensaje
+  logger(loggedUser, logMessage);
 
   fclose(dbFp);
   fclose(textoFp);
@@ -228,6 +249,33 @@ void cargarDesdeArchivo(char *archivoTexto, tipoEntidad tEntidad) {
   system(CLEAR);
   printf("Archivo cargado exitosamente");
   clearStdin();
+}
+
+void logger(usuario loggedUser, char *action) {
+  FILE *fp;
+  char message[160];
+  time_t t ;
+  struct tm *timeStruct ;
+  char fechaHora[50];
+
+  fp = fopen("log.txt", "a");
+
+  time(&t);
+  timeStruct = localtime(&t);
+  strftime(fechaHora, sizeof(fechaHora), "%d/%m/%Y - %H:%Mhs | ", timeStruct);
+
+  strcpy(message, fechaHora);
+  strcat(message, "Usuario: ");
+  strcat(message, loggedUser.username);
+  if (loggedUser.tipo == ADMIN) strcat(message, " (ADMIN) | ");
+  if (loggedUser.tipo == PROFESOR) strcat(message, " (PROFESOR) | ");
+  if (loggedUser.tipo == ALUMNO) strcat(message, " (ALUMNO) | ");
+  strcat(message, action);
+
+  fputs(message, fp);
+  fputs("\n", fp);
+
+  fclose(fp);
 }
 
 // ####################################################################################################################
@@ -367,14 +415,14 @@ void login() {
 
   printf("\nBienvenido, %s", usr.nombreCompleto);
   getchar();
-  if (usr.tipo == ADMIN) menuAdmin(usr.id);
-  if (usr.tipo == ALUMNO) menuAlumno(usr.id);
-  if (usr.tipo == PROFESOR) menuProfesor(usr.id);
+  if (usr.tipo == ADMIN) menuAdmin(usr);
+  if (usr.tipo == ALUMNO) menuAlumno(usr);
+  if (usr.tipo == PROFESOR) menuProfesor(usr);
 
   return;
 }
 
-void menuAdmin(int idUsuario) {
+void menuAdmin(usuario loggedUser) {
   int opt;
   char fileName[32];
   tipoEntidad tEntidad;
@@ -396,13 +444,13 @@ void menuAdmin(int idUsuario) {
       case 0:
         break;
       case 1:
-        menuAdmMaterias();
+        menuAdmMaterias(loggedUser);
         break;
       case 2:
-        menuAdmProfesores();
+        menuAdmProfesores(loggedUser);
         break;
       case 3:
-        menuAdmAlumnos();
+        menuAdmAlumnos(loggedUser);
         break;
       case 4:
         system(CLEAR);
@@ -410,7 +458,7 @@ void menuAdmin(int idUsuario) {
         printf("Ingrese el nombre del archivo: ");
         getstring(fileName, sizeof fileName);
         tEntidad = USUARIO;
-        cargarDesdeArchivo(fileName, tEntidad);
+        cargarDesdeArchivo(loggedUser, fileName, tEntidad);
         break;
       case 5:
         system(CLEAR);
@@ -418,7 +466,7 @@ void menuAdmin(int idUsuario) {
         printf("Ingrese el nombre del archivo: ");
         getstring(fileName, sizeof fileName);
         tEntidad = MATERIA;
-        cargarDesdeArchivo(fileName, tEntidad);
+        cargarDesdeArchivo(loggedUser, fileName, tEntidad);
         break;
       default:
         printf("Opcion incorrecta!\n");
@@ -429,7 +477,7 @@ void menuAdmin(int idUsuario) {
   return;
 }
 
-void menuAdmMaterias() {
+void menuAdmMaterias(usuario loggedUser) {
   int opt;
   do {
     system(CLEAR);
@@ -472,7 +520,7 @@ void menuAdmMaterias() {
   return;
 }
 
-void menuAdmProfesores() {
+void menuAdmProfesores(usuario loggedUser) {
   int opt;
   do {
     system(CLEAR);
@@ -523,7 +571,7 @@ void menuAdmProfesores() {
   return;
 }
 
-void menuAdmAlumnos() {
+void menuAdmAlumnos(usuario loggedUser) {
   int opt;
   do {
     system(CLEAR);
@@ -574,7 +622,7 @@ void menuAdmAlumnos() {
   return;
 }
 
-void menuAlumno(int idUsuario) {
+void menuAlumno(usuario loggedUser) {
   int opt;
   do {
     system(CLEAR);
@@ -609,7 +657,7 @@ void menuAlumno(int idUsuario) {
   return;
 }
 
-void menuProfesor(int idUsuario) {
+void menuProfesor(usuario loggedUser) {
   int opt;
   do {
     system(CLEAR);
