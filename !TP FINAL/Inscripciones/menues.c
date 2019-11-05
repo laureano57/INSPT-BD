@@ -18,28 +18,28 @@ void menuAdmMaterias(usuario loggedUser) {
     printf("[0] Salir\n");
     scanf("%d", &opt);
     clearStdin();
-    switch(opt) {
-      case 0:
-        break;
-      case 1:
-        materiasListar();
-        break;
-      // case 2:
-      //   materiaAlta();
-      //   break;
-      // case 3:
-      //   materiaBaja();
-      //   break;
-      // case 4:
-      //   materiaModificar();
-      //   break;
-      // case 5:
-      //   materiaConsultarProfesor();
-      //   break;
-      default:
-        printf("Opcion incorrecta!\n");
-        printf("Por favor, seleccione una opcion valida\n");
-        break;
+    switch (opt) {
+    case 0:
+      break;
+    case 1:
+      materiasListar();
+      break;
+    // case 2:
+    //   materiaAlta();
+    //   break;
+    // case 3:
+    //   materiaBaja();
+    //   break;
+    // case 4:
+    //   materiaModificar();
+    //   break;
+    // case 5:
+    //   materiaConsultarProfesor();
+    //   break;
+    default:
+      printf("Opcion incorrecta!\n");
+      printf("Por favor, seleccione una opcion valida\n");
+      break;
     }
   } while (opt != 0);
   return;
@@ -63,34 +63,34 @@ void menuAdmProfesores(usuario loggedUser) {
     printf("[0] Salir\n");
     scanf("%d", &opt);
     clearStdin();
-    switch(opt) {
-      case 0:
-        break;
-      case 1:
-        usuariosListar(PROFESOR);
-        break;
-      // case 2:
-      //   usuarioAlta();
-      //   break;
-      // case 3:
-      //   usuarioBaja();
-      //   break;
-      // case 4:
-      //   usuarioModificar();
-      //   break;
-      // case 5:
-      //   usuarioConsultarMaterias();
-      //   break;
-      // case 6:
-      //   usuarioAsignarMateria();
-      //   break;
-      // case 7:
-      //   usuarioDesasignarMateria();
-      //   break;
-      default:
-        printf("Opcion incorrecta!\n");
-        printf("Por favor, seleccione una opcion valida\n");
-        break;
+    switch (opt) {
+    case 0:
+      break;
+    case 1:
+      usuariosListar(PROFESOR);
+      break;
+    // case 2:
+    //   usuarioAlta();
+    //   break;
+    // case 3:
+    //   usuarioBaja();
+    //   break;
+    // case 4:
+    //   usuarioModificar();
+    //   break;
+    // case 5:
+    //   usuarioConsultarMaterias();
+    //   break;
+    // case 6:
+    //   usuarioAsignarMateria();
+    //   break;
+    // case 7:
+    //   usuarioDesasignarMateria();
+    //   break;
+    default:
+      printf("Opcion incorrecta!\n");
+      printf("Por favor, seleccione una opcion valida\n");
+      break;
     }
   } while (opt != 0);
   return;
@@ -114,34 +114,34 @@ void menuAdmAlumnos(usuario loggedUser) {
     printf("[0] Salir\n");
     scanf("%d", &opt);
     clearStdin();
-    switch(opt) {
-      case 0:
-        break;
-      case 1:
-        usuariosListar(ALUMNO);
-        break;
-      // case 2:
-      //   usuarioAlta();
-      //   break;
-      // case 3:
-      //   usuarioBaja();
-      //   break;
-      // case 4:
-      //   usuarioModificar();
-      //   break;
-      // case 5:
-      //   usuarioConsultarMaterias();
-      //   break;
-      // case 6:
-      //   usuarioAsignarMateria();
-      //   break;
-      // case 7:
-      //   usuarioDesasignarMateria();
-      //   break;
-      default:
-        printf("Opcion incorrecta!\n");
-        printf("Por favor, seleccione una opcion valida\n");
-        break;
+    switch (opt) {
+    case 0:
+      break;
+    case 1:
+      usuariosListar(ALUMNO);
+      break;
+    // case 2:
+    //   usuarioAlta();
+    //   break;
+    // case 3:
+    //   usuarioBaja();
+    //   break;
+    // case 4:
+    //   usuarioModificar();
+    //   break;
+    // case 5:
+    //   usuarioConsultarMaterias();
+    //   break;
+    // case 6:
+    //   usuarioAsignarMateria();
+    //   break;
+    // case 7:
+    //   usuarioDesasignarMateria();
+    //   break;
+    default:
+      printf("Opcion incorrecta!\n");
+      printf("Por favor, seleccione una opcion valida\n");
+      break;
     }
   } while (opt != 0);
   return;
@@ -161,22 +161,22 @@ void menuAlumno(usuario loggedUser) {
     printf("[0] Salir\n");
     scanf("%d", &opt);
     clearStdin();
-    switch(opt) {
-      case 0:
-        break;
-      // case 1:
-      //   usuarioConsultarMaterias(int idUsuario);
-      //   break;
-      // case 2:
-      //   usuarioAsignarMateria(int idUsuario, int idMateria)();
-      //   break;
-      // case 3:
-      //   usuarioDesasignarMateria();
-      //   break;
-      default:
-        printf("Opcion incorrecta!\n");
-        printf("Por favor, seleccione una opcion valida\n");
-        break;
+    switch (opt) {
+    case 0:
+      break;
+    // case 1:
+    //   usuarioConsultarMaterias(int idUsuario);
+    //   break;
+    // case 2:
+    //   usuarioAsignarMateria(int idUsuario, int idMateria)();
+    //   break;
+    // case 3:
+    //   usuarioDesasignarMateria();
+    //   break;
+    default:
+      printf("Opcion incorrecta!\n");
+      printf("Por favor, seleccione una opcion valida\n");
+      break;
     }
   } while (opt != 0);
   return;
@@ -195,19 +195,19 @@ void menuProfesor(usuario loggedUser) {
     printf("[0] Salir\n");
     scanf("%d", &opt);
     clearStdin();
-    switch(opt) {
-      case 0:
-        break;
-      // case 1:
-      //   usuarioConsultarMaterias(int idUsuario);
-      //   break;
-      // case 2:
-      //   materiaConsultarAlumnos(int idMateria);
-      //   break;
-      default:
-        printf("Opcion incorrecta!\n");
-        printf("Por favor, seleccione una opcion valida\n");
-        break;
+    switch (opt) {
+    case 0:
+      break;
+    // case 1:
+    //   usuarioConsultarMaterias(int idUsuario);
+    //   break;
+    // case 2:
+    //   materiaConsultarAlumnos(int idMateria);
+    //   break;
+    default:
+      printf("Opcion incorrecta!\n");
+      printf("Por favor, seleccione una opcion valida\n");
+      break;
     }
   } while (opt != 0);
   return;
@@ -231,38 +231,38 @@ void menuAdmin(usuario loggedUser) {
     printf("[0] Salir\n");
     scanf("%d", &opt);
     clearStdin();
-    switch(opt) {
-      case 0:
-        break;
-      case 1:
-        menuAdmMaterias(loggedUser);
-        break;
-      case 2:
-        menuAdmProfesores(loggedUser);
-        break;
-      case 3:
-        menuAdmAlumnos(loggedUser);
-        break;
-      case 4:
-        system(CLEAR);
-        printf("####  Cargar usuarios desde archivo  ####\n");
-        printf("Ingrese el nombre del archivo: ");
-        getstring(fileName, sizeof fileName);
-        tEntidad = USUARIO;
-        cargarDesdeArchivo(loggedUser, fileName, tEntidad);
-        break;
-      case 5:
-        system(CLEAR);
-        printf("####  Cargar materias desde archivo  ####\n");
-        printf("Ingrese el nombre del archivo: ");
-        getstring(fileName, sizeof fileName);
-        tEntidad = MATERIA;
-        cargarDesdeArchivo(loggedUser, fileName, tEntidad);
-        break;
-      default:
-        printf("Opcion incorrecta!\n");
-        printf("Por favor, seleccione una opcion valida\n");
-        break;
+    switch (opt) {
+    case 0:
+      break;
+    case 1:
+      menuAdmMaterias(loggedUser);
+      break;
+    case 2:
+      menuAdmProfesores(loggedUser);
+      break;
+    case 3:
+      menuAdmAlumnos(loggedUser);
+      break;
+    case 4:
+      system(CLEAR);
+      printf("####  Cargar usuarios desde archivo  ####\n");
+      printf("Ingrese el nombre del archivo: ");
+      getstring(fileName, sizeof fileName);
+      tEntidad = USUARIO;
+      cargarDesdeArchivo(loggedUser, fileName, tEntidad);
+      break;
+    case 5:
+      system(CLEAR);
+      printf("####  Cargar materias desde archivo  ####\n");
+      printf("Ingrese el nombre del archivo: ");
+      getstring(fileName, sizeof fileName);
+      tEntidad = MATERIA;
+      cargarDesdeArchivo(loggedUser, fileName, tEntidad);
+      break;
+    default:
+      printf("Opcion incorrecta!\n");
+      printf("Por favor, seleccione una opcion valida\n");
+      break;
     }
   } while (opt != 0);
   return;

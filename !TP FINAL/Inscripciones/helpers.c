@@ -8,7 +8,7 @@ char *getstring(char *buf, size_t size) {
       buf[strcspn(buf, "\n")] = '\0';
       return buf;
     }
-    *buf = '\0';  /* clear buffer at end of file */
+    *buf = '\0'; /* clear buffer at end of file */
   }
   return NULL;
 }
@@ -16,15 +16,15 @@ char *getstring(char *buf, size_t size) {
 void clearStdin(void) {
   int c;
   do
-  c = getc(stdin);
+    c = getc(stdin);
   while (c != '\n' && c != EOF);
 }
 
 void logger(usuario loggedUser, char *action) {
   FILE *fp;
   char message[160];
-  time_t t ;
-  struct tm *timeStruct ;
+  time_t t;
+  struct tm *timeStruct;
   char fechaHora[50];
 
   fp = fopen("log.txt", "a");
@@ -36,9 +36,12 @@ void logger(usuario loggedUser, char *action) {
   strcpy(message, fechaHora);
   strcat(message, "Usuario: ");
   strcat(message, loggedUser.username);
-  if (loggedUser.tipo == ADMIN) strcat(message, " (ADMIN) | ");
-  if (loggedUser.tipo == PROFESOR) strcat(message, " (PROFESOR) | ");
-  if (loggedUser.tipo == ALUMNO) strcat(message, " (ALUMNO) | ");
+  if (loggedUser.tipo == ADMIN)
+    strcat(message, " (ADMIN) | ");
+  if (loggedUser.tipo == PROFESOR)
+    strcat(message, " (PROFESOR) | ");
+  if (loggedUser.tipo == ALUMNO)
+    strcat(message, " (ALUMNO) | ");
   strcat(message, action);
 
   fputs(message, fp);
@@ -60,10 +63,14 @@ void cargarDesdeArchivo(usuario loggedUser, char *archivoTexto, tipoEntidad tEnt
   char line[80];
   char archivoDb[30];
 
-  if (tEntidad == USUARIO) strcpy(archivoDb, USUARIOS_DAT);
-  if (tEntidad == MATERIA) strcpy(archivoDb, MATERIAS_DAT);
-  if (tEntidad == MATERIA_PROFESOR) strcpy(archivoDb, MATERIA_PROFESOR_DAT);
-  if (tEntidad == MATERIA_ESTUDIANTE) strcpy(archivoDb, MATERIA_ESTUDIANTE_DAT);
+  if (tEntidad == USUARIO)
+    strcpy(archivoDb, USUARIOS_DAT);
+  if (tEntidad == MATERIA)
+    strcpy(archivoDb, MATERIAS_DAT);
+  if (tEntidad == MATERIA_PROFESOR)
+    strcpy(archivoDb, MATERIA_PROFESOR_DAT);
+  if (tEntidad == MATERIA_ESTUDIANTE)
+    strcpy(archivoDb, MATERIA_ESTUDIANTE_DAT);
 
   // Campos de los registros
   int id, idMateria, idProfesor, idEstudiante;
@@ -90,41 +97,44 @@ void cargarDesdeArchivo(usuario loggedUser, char *archivoTexto, tipoEntidad tEnt
 
     // Parseo la linea segun tipo de entidad
     if (tEntidad == USUARIO) {
-        usuarioReg.id = id;
+      usuarioReg.id = id;
 
-        token = strtok(NULL, ",");
-        strcpy(usuarioReg.nombreCompleto, token);
+      token = strtok(NULL, ",");
+      strcpy(usuarioReg.nombreCompleto, token);
 
-        token = strtok(NULL, ",");
-        strcpy(usuarioReg.username, token);
+      token = strtok(NULL, ",");
+      strcpy(usuarioReg.username, token);
 
-        token = strtok(NULL, ",");
-        strcpy(usuarioReg.password, token);
+      token = strtok(NULL, ",");
+      strcpy(usuarioReg.password, token);
 
-        token = strtok(NULL, ",");
-        tipo = atoi(token);
-        if (tipo == 0) usuarioReg.tipo = ADMIN;
-        if (tipo == 1) usuarioReg.tipo = PROFESOR;
-        if (tipo == 2) usuarioReg.tipo = ALUMNO;
+      token = strtok(NULL, ",");
+      tipo = atoi(token);
+      if (tipo == 0)
+        usuarioReg.tipo = ADMIN;
+      if (tipo == 1)
+        usuarioReg.tipo = PROFESOR;
+      if (tipo == 2)
+        usuarioReg.tipo = ALUMNO;
 
-        token = strtok(NULL, ",");
-        usuarioReg.estado = atoi(token);
+      token = strtok(NULL, ",");
+      usuarioReg.estado = atoi(token);
 
-        strcpy(nombreTabla, "usuario");
-        fwrite(&usuarioReg, sizeof(usuarioReg), 1, dbFp);
+      strcpy(nombreTabla, "usuario");
+      fwrite(&usuarioReg, sizeof(usuarioReg), 1, dbFp);
     }
     // Parseo la linea segun tipo de entidad
     if (tEntidad == MATERIA) {
-        materiaReg.id = id;
+      materiaReg.id = id;
 
-        token = strtok(NULL, ",");
-        strcpy(materiaReg.nombre, token);
+      token = strtok(NULL, ",");
+      strcpy(materiaReg.nombre, token);
 
-        token = strtok(NULL, ",");
-        materiaReg.estado = atoi(token);
+      token = strtok(NULL, ",");
+      materiaReg.estado = atoi(token);
 
-        strcpy(nombreTabla, "materia");
-        fwrite(&materiaReg, sizeof(materiaReg), 1, dbFp);
+      strcpy(nombreTabla, "materia");
+      fwrite(&materiaReg, sizeof(materiaReg), 1, dbFp);
     }
     // Parseo la linea segun tipo de entidad
     if (tEntidad == MATERIA_PROFESOR) {
@@ -233,16 +243,18 @@ void login() {
         system(CLEAR);
       }
     } while (existe == 0);
-
   }
 
   fclose(dbFp);
 
   printf("\nBienvenido, %s", usr.nombreCompleto);
   getchar();
-  if (usr.tipo == ADMIN) menuAdmin(usr);
-  if (usr.tipo == ALUMNO) menuAlumno(usr);
-  if (usr.tipo == PROFESOR) menuProfesor(usr);
+  if (usr.tipo == ADMIN)
+    menuAdmin(usr);
+  if (usr.tipo == ALUMNO)
+    menuAlumno(usr);
+  if (usr.tipo == PROFESOR)
+    menuProfesor(usr);
 
   return;
 }

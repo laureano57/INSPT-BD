@@ -4,10 +4,10 @@
 
 // Librerias
 #include <ctype.h>
-#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 // Libs y definiciones especificas de linux
 #if defined(__linux__)

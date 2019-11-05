@@ -3,18 +3,9 @@
 // ####################################################################################################################
 
 // Tipos de usuario y entidad
-typedef enum {
-  ADMIN,
-  PROFESOR,
-  ALUMNO
-} tipoUsuario;
+typedef enum { ADMIN, PROFESOR, ALUMNO } tipoUsuario;
 
-typedef enum {
-  MATERIA,
-  USUARIO,
-  MATERIA_PROFESOR,
-  MATERIA_ESTUDIANTE
-} tipoEntidad;
+typedef enum { MATERIA, USUARIO, MATERIA_PROFESOR, MATERIA_ESTUDIANTE } tipoEntidad;
 
 // Registros
 typedef struct usuario {
