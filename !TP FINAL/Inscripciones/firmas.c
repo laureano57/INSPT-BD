@@ -2,8 +2,13 @@
 // ####                                               Declaraciones                                                ####
 // ####################################################################################################################
 
+// helpers.c
+char *getstring(char *buf, size_t size);
+void cargarDesdeArchivo(usuario loggedUser, char *archivoTexto, tipoEntidad tEntidad);
+void logger(usuario loggedUser, char *action);
 void login();
 
+// menues.c
 void menuAdmin(usuario loggedUser);
 void menuAdmMaterias(usuario loggedUser);
 void menuAdmProfesores(usuario loggedUser);
@@ -11,8 +16,7 @@ void menuAdmAlumnos(usuario loggedUser);
 void menuAlumno(usuario loggedUser);
 void menuProfesor(usuario loggedUser);
 
-void cargarDesdeArchivo(usuario loggedUser, char *archivoTexto, tipoEntidad tEntidad);
-
+// listados.c
 // void materiaAlta();
 // void materiaBaja(int idMateria);
 // void materiaModificar(int idMateria);
@@ -31,6 +35,3 @@ void usuariosListar(tipoUsuario tipo);
 // Listan las entidades y devuelven el ID de una de ellas
 // int seleccionarMateria();
 // int seleccionarUsuario(tipoUsuario tipo);
-
-// Funcion logger para loguear todas las acciones de los usuarios
-void logger(usuario loggedUser, char *action);
