@@ -1,6 +1,0 @@
-1,Sistemas de computacion 1,1,
-2,Analisis matematico 2,1,
-3,Algebra,1,
-4,Modelos discretos,1,
-5,Tecnicas digitales,1,
-6,Programacion 2,1,
