@@ -27,14 +27,14 @@ void logger(usuario loggedUser, char *action) {
   struct tm *timeStruct;
   char fechaHora[50];
 
-  fp = fopen("log.txt", "a");
+  fp = fopen(LOG_FILE, "a");
 
   time(&t);
   timeStruct = localtime(&t);
   strftime(fechaHora, sizeof(fechaHora), "%d/%m/%Y - %H:%Mhs | ", timeStruct);
 
   strcpy(message, fechaHora);
-  strcat(message, "Usuario: ");
+  strcat(message, "Operador: ");
   strcat(message, loggedUser.username);
   if (loggedUser.tipo == ADMIN)
     strcat(message, " (ADMIN) | ");

@@ -2,151 +2,6 @@
 // ####                                                  Menues                                                    ####
 // ####################################################################################################################
 
-void menuAdmMaterias(usuario loggedUser) {
-  int opt;
-  do {
-    system(CLEAR);
-    printf("#############################################################################\n");
-    printf("##                         Sistema de inscripciones                        ##\n");
-    printf("##                           Administrar materias                          ##\n");
-    printf("#############################################################################\n");
-    printf("[1] Listar materias\n");
-    printf("[2] Alta de materias\n");
-    printf("[3] Baja de materias\n");
-    printf("[4] Editar una materia\n");
-    printf("[5] Consultar profesor asignado a una materia\n");
-    printf("[0] Salir\n");
-    scanf("%d", &opt);
-    clearStdin();
-    switch (opt) {
-    case 0:
-      break;
-    case 1:
-      materiasListar();
-      break;
-    // case 2:
-    //   materiaAlta();
-    //   break;
-    // case 3:
-    //   materiaBaja();
-    //   break;
-    // case 4:
-    //   materiaModificar();
-    //   break;
-    // case 5:
-    //   materiaConsultarProfesor();
-    //   break;
-    default:
-      printf("Opcion incorrecta!\n");
-      printf("Por favor, seleccione una opcion valida\n");
-      break;
-    }
-  } while (opt != 0);
-  return;
-}
-
-void menuAdmProfesores(usuario loggedUser) {
-  int opt;
-  do {
-    system(CLEAR);
-    printf("#############################################################################\n");
-    printf("##                         Sistema de inscripciones                        ##\n");
-    printf("##                          Administrar profesores                         ##\n");
-    printf("#############################################################################\n");
-    printf("[1] Listar profesores\n");
-    printf("[2] Alta de profesores\n");
-    printf("[3] Baja de profesores\n");
-    printf("[4] Editar un profesor\n");
-    printf("[5] Listar materias asignadas a un profesor\n");
-    printf("[6] Asignar una materia a un profesor\n");
-    printf("[7] Des-asignar una materia a un profesor\n");
-    printf("[0] Salir\n");
-    scanf("%d", &opt);
-    clearStdin();
-    switch (opt) {
-    case 0:
-      break;
-    case 1:
-      usuariosListar(PROFESOR);
-      break;
-    // case 2:
-    //   usuarioAlta();
-    //   break;
-    // case 3:
-    //   usuarioBaja();
-    //   break;
-    // case 4:
-    //   usuarioModificar();
-    //   break;
-    // case 5:
-    //   usuarioConsultarMaterias();
-    //   break;
-    // case 6:
-    //   usuarioAsignarMateria();
-    //   break;
-    // case 7:
-    //   usuarioDesasignarMateria();
-    //   break;
-    default:
-      printf("Opcion incorrecta!\n");
-      printf("Por favor, seleccione una opcion valida\n");
-      break;
-    }
-  } while (opt != 0);
-  return;
-}
-
-void menuAdmAlumnos(usuario loggedUser) {
-  int opt;
-  do {
-    system(CLEAR);
-    printf("#############################################################################\n");
-    printf("##                         Sistema de inscripciones                        ##\n");
-    printf("##                            Administrar alumnos                          ##\n");
-    printf("#############################################################################\n");
-    printf("[1] Listar alumnos\n");
-    printf("[2] Alta de alumnos\n");
-    printf("[3] Baja de alumnos\n");
-    printf("[4] Editar un alumno\n");
-    printf("[5] Listar materias inscriptas de un alumno\n");
-    printf("[6] Inscribir alumno a una materia\n");
-    printf("[7] Des-inscribir alumno de una materia\n");
-    printf("[0] Salir\n");
-    scanf("%d", &opt);
-    clearStdin();
-    switch (opt) {
-    case 0:
-      break;
-    case 1:
-      usuariosListar(ALUMNO);
-      break;
-    // case 2:
-    //   usuarioAlta();
-    //   break;
-    // case 3:
-    //   usuarioBaja();
-    //   break;
-    // case 4:
-    //   usuarioModificar();
-    //   break;
-    // case 5:
-    //   usuarioConsultarMaterias();
-    //   break;
-    // case 6:
-    //   usuarioAsignarMateria();
-    //   break;
-    // case 7:
-    //   usuarioDesasignarMateria();
-    //   break;
-    default:
-      printf("Opcion incorrecta!\n");
-      printf("Por favor, seleccione una opcion valida\n");
-      break;
-    }
-  } while (opt != 0);
-  return;
-}
-
 void menuAlumno(usuario loggedUser) {
   int opt;
   do {
@@ -259,6 +114,157 @@ void menuAdmin(usuario loggedUser) {
       tEntidad = MATERIA;
       cargarDesdeArchivo(loggedUser, fileName, tEntidad);
       break;
+    default:
+      printf("Opcion incorrecta!\n");
+      printf("Por favor, seleccione una opcion valida\n");
+      break;
+    }
+  } while (opt != 0);
+  return;
+}
+
+void menuAdmMaterias(usuario loggedUser) {
+  int opt;
+  do {
+    system(CLEAR);
+    printf("#############################################################################\n");
+    printf("##                         Sistema de inscripciones                        ##\n");
+    printf("##                           Administrar materias                          ##\n");
+    printf("#############################################################################\n");
+    printf("[1] Listar materias\n");
+    printf("[2] Alta de materias\n");
+    printf("[3] Activar o desactivar materias\n");
+    printf("[4] Editar una materia\n");
+    printf("[5] Consultar profesor asignado a una materia\n");
+    printf("[0] Volver\n");
+    scanf("%d", &opt);
+    clearStdin();
+    switch (opt) {
+    case 0:
+      break;
+    case 1:
+      materiasListar();
+      break;
+    // case 2:
+    //   materiaAlta();
+    //   break;
+    // case 3:
+    //   materiaBaja();
+    //   break;
+    // case 4:
+    //   materiaModificar();
+    //   break;
+    // case 5:
+    //   materiaConsultarProfesor();
+    //   break;
+    default:
+      printf("Opcion incorrecta!\n");
+      printf("Por favor, seleccione una opcion valida\n");
+      break;
+    }
+  } while (opt != 0);
+  return;
+}
+
+void menuAdmProfesores(usuario loggedUser) {
+  int opt;
+  do {
+    system(CLEAR);
+    printf("#############################################################################\n");
+    printf("##                         Sistema de inscripciones                        ##\n");
+    printf("##                          Administrar profesores                         ##\n");
+    printf("#############################################################################\n");
+    printf("[1] Listar profesores\n");
+    printf("[2] Alta de profesores\n");
+    printf("[3] Activar o desactivar profesores\n");
+    printf("[4] Editar un profesor\n");
+    printf("[5] Listar materias asignadas a un profesor\n");
+    printf("[6] Asignar una materia a un profesor\n");
+    printf("[7] Des-asignar una materia a un profesor\n");
+    printf("[0] Volver\n");
+    scanf("%d", &opt);
+    clearStdin();
+    switch (opt) {
+    case 0:
+      break;
+    case 1:
+      system(CLEAR);
+      // Lista solo usuarios activos
+      usuariosListar(PROFESOR, 0);
+      getchar();
+      break;
+    case 2:
+      usuarioAlta(loggedUser, PROFESOR);
+      break;
+    case 3:
+      usuarioActivarDesactivar(loggedUser, PROFESOR);
+      break;
+    // case 4:
+    //   usuarioModificar();
+    //   break;
+    // case 5:
+    //   usuarioConsultarMaterias();
+    //   break;
+    // case 6:
+    //   usuarioAsignarMateria();
+    //   break;
+    // case 7:
+    //   usuarioDesasignarMateria();
+    //   break;
+    default:
+      printf("Opcion incorrecta!\n");
+      printf("Por favor, seleccione una opcion valida\n");
+      break;
+    }
+  } while (opt != 0);
+  return;
+}
+
+void menuAdmAlumnos(usuario loggedUser) {
+  int opt;
+  do {
+    system(CLEAR);
+    printf("#############################################################################\n");
+    printf("##                         Sistema de inscripciones                        ##\n");
+    printf("##                            Administrar alumnos                          ##\n");
+    printf("#############################################################################\n");
+    printf("[1] Listar alumnos\n");
+    printf("[2] Alta de alumnos\n");
+    printf("[3] Activar o desactivar alumnos\n");
+    printf("[4] Editar un alumno\n");
+    printf("[5] Listar materias inscriptas de un alumno\n");
+    printf("[6] Inscribir alumno a una materia\n");
+    printf("[7] Des-inscribir alumno de una materia\n");
+    printf("[0] Volver\n");
+    scanf("%d", &opt);
+    clearStdin();
+    switch (opt) {
+    case 0:
+      break;
+    case 1:
+      system(CLEAR);
+      // Lista solo usuarios activos
+      usuariosListar(ALUMNO, 0);
+      getchar();
+      break;
+    case 2:
+      usuarioAlta(loggedUser, ALUMNO);
+      break;
+    case 3:
+      usuarioActivarDesactivar(loggedUser, ALUMNO);
+      break;
+    // case 4:
+    //   usuarioModificar();
+    //   break;
+    // case 5:
+    //   usuarioConsultarMaterias();
+    //   break;
+    // case 6:
+    //   usuarioAsignarMateria();
+    //   break;
+    // case 7:
+    //   usuarioDesasignarMateria();
+    //   break;
     default:
       printf("Opcion incorrecta!\n");
       printf("Por favor, seleccione una opcion valida\n");

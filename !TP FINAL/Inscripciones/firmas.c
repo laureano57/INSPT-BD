@@ -17,20 +17,21 @@ void menuAlumno(usuario loggedUser);
 void menuProfesor(usuario loggedUser);
 
 // listados.c
-// void materiaAlta();
-// void materiaBaja(int idMateria);
-// void materiaModificar(int idMateria);
+void usuariosListar(tipoUsuario tipo, int mostrarTodos);
+// void usuarioConsultarMaterias(int idUsuario);
 void materiasListar();
 // void materiaConsultarProfesor(int idMateria);
 // void materiaConsultarAlumnos(int idMateria);
 
-// void usuarioAlta();
-// void usuarioBaja(int idUsuario);
+// abms.c
+void usuarioAlta();
+void usuarioActivarDesactivar(usuario loggedUser, tipoUsuario tipoUsr);
 // void usuarioModificar(int idUsuario);
-void usuariosListar(tipoUsuario tipo);
-// void usuarioConsultarMaterias(int idUsuario);
 // void usuarioAsignarMateria(int idUsuario, int idMateria);
 // void usuarioDesasignarMateria(int idUsuario, int idMateria);
+// void materiaAlta();
+// void materiaBaja(int idMateria);
+// void materiaModificar(int idMateria);
 
 // Listan las entidades y devuelven el ID de una de ellas
 // int seleccionarMateria();

@@ -4,8 +4,10 @@
 
 // Tipos de usuario y entidad
 typedef enum { ADMIN, PROFESOR, ALUMNO } tipoUsuario;
+char *tipoUsrString[] = {"Admin", "Profesor", "Alumno"};
 
 typedef enum { MATERIA, USUARIO, MATERIA_PROFESOR, MATERIA_ESTUDIANTE } tipoEntidad;
+char *tipoEntidadString[] = {"materia", "usuario", "materia_profesor", "materia_estudiante"};
 
 // Registros
 typedef struct usuario {
