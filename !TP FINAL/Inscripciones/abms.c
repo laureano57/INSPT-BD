@@ -83,40 +83,31 @@ void usuarioAlta(usuario loggedUser, tipoUsuario tipoUsr) {
   fclose(dbFp);
 }
 
-void usuarioActivarDesactivar(usuario loggedUser, tipoUsuario tipoUsr) {
+void usuarioEditar(usuario loggedUser, tipoUsuario tipoUsr) {
   FILE *dbFp;
   dbFp = fopen(USUARIOS_DAT, "rb+");
   usuario usuarioReg;
-  int idUsr, opt, existe = 0;
+  int idUsr, opt, operacion, existe = 0;
   char logMessage[100];
   char strNum[5];
 
-  do {
-    system(CLEAR);
-    printf("#############################################################################\n");
-    printf("##                       Activar o desactivar usuarios                     ##\n");
-    // Lista usuarios activos e inactivos
-    usuariosListar(tipoUsr, 1);
+  system(CLEAR);
+  printf("#############################################################################\n");
+  printf("##                              Editar usuarios                            ##\n");
 
-    printf("\n");
-    if (opt < 0 || opt > 2) printf("\nOpcion invalida!");
-    printf("\nSeleccione una operacion: \n");
-    printf("[1] Activar\n");
-    printf("[2] Desactivar\n");
-    printf("[0] Salir\n");
-    printf("Opcion: ");
-    scanf("%d", &opt);
-    clearStdin();
-    if (opt == 0) return;
-  } while (opt < 0 || opt > 2);
+  // Lista usuarios activos e inactivos
+  usuariosListar(tipoUsr, 1);
 
-  printf("Ingrese el ID de usuario: ");
+  printf("\n\nIngrese el ID de un usuario: ");
   scanf("%d", &idUsr);
   clearStdin();
 
   while (fread(&usuarioReg, sizeof(usuarioReg), 1, dbFp)) {
     if (usuarioReg.id == idUsr && usuarioReg.tipo == tipoUsr) {
-      usuarioReg.estado = (opt == 1) ? 1 : 0;
+      operacion = editarUsuarioSelected(&usuarioReg);
+
+      if (operacion == 0) return;
+
       existe = 1;
       fseek(dbFp, -sizeof(usuarioReg), SEEK_CUR);
       fwrite(&usuarioReg, sizeof(usuarioReg), 1, dbFp);
@@ -133,25 +124,97 @@ void usuarioActivarDesactivar(usuario loggedUser, tipoUsuario tipoUsr) {
     printf("#############################################################################\n");
     printf("\n\n%-5s%-30s%-20s%-15s%-15s\n", "Id", "Nombre completo", "Username", "Tipo", "Estado");
     printf("\n%-5d%-30s%-20s%-15s%-15s",
-      usuarioReg.id, usuarioReg.nombreCompleto,
-      usuarioReg.username, tipoUsrString[usuarioReg.tipo],
-      (opt == 1) ? "Activo" : "Inactivo"
+      usuarioReg.id, usuarioReg.nombreCompleto, usuarioReg.username,
+      tipoUsrString[usuarioReg.tipo], usuarioReg.estado ? "Activo" : "Inactivo"
     );
 
     // Logs
-    strcpy(logMessage, "Cambio el estado del usuario '");
-    strcat(logMessage, usuarioReg.username);
-    strcat(logMessage, "' (Id: ");
+    strcpy(logMessage, "Id usuario: ");
     sprintf(strNum,"%d", usuarioReg.id);
     strcat(logMessage, strNum);
-    strcat(logMessage, " | Tipo: ");
-    strcat(logMessage, tipoUsrString[usuarioReg.tipo]);
-    strcat(logMessage, ") a ");
-    if (usuarioReg.estado == 0) strcat(logMessage, "IN");
-    strcat(logMessage, "ACTIVO");
+    strcat(logMessage, " => Cambia el campo '");
+
+    switch (operacion) {
+      // Editar nombre
+      case 1:
+        strcat(logMessage, "Nombre completo' a '");
+        strcat(logMessage, usuarioReg.nombreCompleto);
+        strcat(logMessage, "'");
+        break;
+      // Editar username
+      case 2:
+        strcat(logMessage, "Username' a '");
+        strcat(logMessage, usuarioReg.username);
+        strcat(logMessage, "'");
+        break;
+      // Editar password
+      case 3:
+        strcat(logMessage, "Password' a '");
+        strcat(logMessage, usuarioReg.password);
+        strcat(logMessage, "'");
+        break;
+      // Editar estado
+      case 4:
+        strcat(logMessage, "Estado' a '");
+        strcat(logMessage, usuarioReg.estado ? "Activo" : "Inactivo");
+        strcat(logMessage, "'");
+        break;
+    }
     logger(loggedUser, logMessage);
   };
 
   getchar();
   fclose(dbFp);
+}
+
+int editarUsuarioSelected(usuario *usr) {
+  int estado, operacion;
+  char aux[30];
+
+  do {
+    printf("\nSeleccione una operacion: \n");
+    printf("[1] Editar nombre\n");
+    printf("[2] Editar username\n");
+    printf("[3] Editar password\n");
+    printf("[4] Cambiar estado\n");
+    printf("[0] Salir\n");
+    printf("Opcion: ");
+    scanf("%d", &operacion);
+    clearStdin();
+    if (operacion == 0) return operacion;
+  } while (operacion < 0 || operacion > 4);
+
+  switch (operacion) {
+    case 1:
+      printf("\nIngrese el nuevo nombre completo: ");
+      getstring(aux, sizeof aux);
+      strcpy(usr->nombreCompleto, aux);
+      return operacion;
+      break;
+    case 2:
+      printf("\nIngrese el nuevo nombre de usuario: ");
+      getstring(aux, sizeof aux);
+      strcpy(usr->username, aux);
+      return operacion;
+      break;
+    case 3:
+      printf("\nIngrese el nuevo password: ");
+      getstring(aux, sizeof aux);
+      strcpy(usr->password, aux);
+      return operacion;
+      break;
+    case 4:
+      do {
+        printf("\nSeleccione una opcion: \n");
+        printf("[1] Activar usuario\n");
+        printf("[0] Desactivar usuario\n");
+        scanf("%d", &estado);
+        clearStdin();
+      } while (estado < 0 || estado > 1);
+      usr->estado = estado;
+      return operacion;
+      break;
+    default:
+      return 0;
+  }
 }

@@ -133,9 +133,8 @@ void menuAdmMaterias(usuario loggedUser) {
     printf("#############################################################################\n");
     printf("[1] Listar materias\n");
     printf("[2] Alta de materias\n");
-    printf("[3] Activar o desactivar materias\n");
-    printf("[4] Editar una materia\n");
-    printf("[5] Consultar profesor asignado a una materia\n");
+    printf("[3] Editar una materia\n");
+    printf("[4] Consultar profesor asignado a una materia\n");
     printf("[0] Volver\n");
     scanf("%d", &opt);
     clearStdin();
@@ -149,12 +148,9 @@ void menuAdmMaterias(usuario loggedUser) {
     //   materiaAlta();
     //   break;
     // case 3:
-    //   materiaBaja();
+    //   materiaEditar();
     //   break;
     // case 4:
-    //   materiaModificar();
-    //   break;
-    // case 5:
     //   materiaConsultarProfesor();
     //   break;
     default:
@@ -176,11 +172,10 @@ void menuAdmProfesores(usuario loggedUser) {
     printf("#############################################################################\n");
     printf("[1] Listar profesores\n");
     printf("[2] Alta de profesores\n");
-    printf("[3] Activar o desactivar profesores\n");
-    printf("[4] Editar un profesor\n");
-    printf("[5] Listar materias asignadas a un profesor\n");
-    printf("[6] Asignar una materia a un profesor\n");
-    printf("[7] Des-asignar una materia a un profesor\n");
+    printf("[3] Editar un profesor\n");
+    printf("[4] Listar materias asignadas a un profesor\n");
+    printf("[5] Asignar una materia a un profesor\n");
+    printf("[6] Des-asignar una materia a un profesor\n");
     printf("[0] Volver\n");
     scanf("%d", &opt);
     clearStdin();
@@ -197,18 +192,15 @@ void menuAdmProfesores(usuario loggedUser) {
       usuarioAlta(loggedUser, PROFESOR);
       break;
     case 3:
-      usuarioActivarDesactivar(loggedUser, PROFESOR);
+      usuarioEditar(loggedUser, PROFESOR);
       break;
     // case 4:
-    //   usuarioModificar();
-    //   break;
-    // case 5:
     //   usuarioConsultarMaterias();
     //   break;
-    // case 6:
+    // case 5:
     //   usuarioAsignarMateria();
     //   break;
-    // case 7:
+    // case 6:
     //   usuarioDesasignarMateria();
     //   break;
     default:
@@ -230,11 +222,10 @@ void menuAdmAlumnos(usuario loggedUser) {
     printf("#############################################################################\n");
     printf("[1] Listar alumnos\n");
     printf("[2] Alta de alumnos\n");
-    printf("[3] Activar o desactivar alumnos\n");
-    printf("[4] Editar un alumno\n");
-    printf("[5] Listar materias inscriptas de un alumno\n");
-    printf("[6] Inscribir alumno a una materia\n");
-    printf("[7] Des-inscribir alumno de una materia\n");
+    printf("[3] Editar un alumno\n");
+    printf("[4] Listar materias inscriptas de un alumno\n");
+    printf("[5] Inscribir alumno a una materia\n");
+    printf("[6] Des-inscribir alumno de una materia\n");
     printf("[0] Volver\n");
     scanf("%d", &opt);
     clearStdin();
@@ -251,18 +242,15 @@ void menuAdmAlumnos(usuario loggedUser) {
       usuarioAlta(loggedUser, ALUMNO);
       break;
     case 3:
-      usuarioActivarDesactivar(loggedUser, ALUMNO);
+      usuarioEditar(loggedUser, ALUMNO);
       break;
     // case 4:
-    //   usuarioModificar();
-    //   break;
-    // case 5:
     //   usuarioConsultarMaterias();
     //   break;
-    // case 6:
+    // case 5:
     //   usuarioAsignarMateria();
     //   break;
-    // case 7:
+    // case 6:
     //   usuarioDesasignarMateria();
     //   break;
     default:

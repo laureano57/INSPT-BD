@@ -25,13 +25,13 @@ void materiasListar();
 
 // abms.c
 void usuarioAlta();
-void usuarioActivarDesactivar(usuario loggedUser, tipoUsuario tipoUsr);
-// void usuarioModificar(int idUsuario);
+void usuarioEditar(usuario loggedUser, tipoUsuario tipoUsr);
+int editarUsuarioSelected(usuario *usr);
 // void usuarioAsignarMateria(int idUsuario, int idMateria);
 // void usuarioDesasignarMateria(int idUsuario, int idMateria);
 // void materiaAlta();
 // void materiaBaja(int idMateria);
-// void materiaModificar(int idMateria);
+// void materiaEditar(int idMateria);
 
 // Listan las entidades y devuelven el ID de una de ellas
 // int seleccionarMateria();

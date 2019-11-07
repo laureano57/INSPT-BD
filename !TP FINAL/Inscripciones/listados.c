@@ -44,9 +44,9 @@ void usuariosListar(tipoUsuario tUsuario, int mostrarTodos) {
   printf("##                             Usuarios cargados                           ##\n");
   printf("#############################################################################\n");
   if (mostrarTodos) {
-    printf("\n%-10s%-20s%-20s%-12s%-12s\n", "Id", "Nombre", "Username", "Tipo", "Estado");
+    printf("\n%-10s%-30s%-20s%-12s%-12s\n", "Id", "Nombre", "Username", "Tipo", "Estado");
   } else {
-    printf("\n%-10s%-20s%-20s%-12s\n", "Id", "Nombre", "Username", "Tipo");
+    printf("\n%-10s%-30s%-20s%-12s\n", "Id", "Nombre", "Username", "Tipo");
   }
 
   fread(&usuarioReg, sizeof(usuarioReg), 1, fp);
@@ -54,13 +54,13 @@ void usuariosListar(tipoUsuario tUsuario, int mostrarTodos) {
     if (usuarioReg.tipo == tUsuario) {
       if (usuarioReg.estado == 1) {
         if (mostrarTodos) {
-          printf("\n%-10d%-20s%-20s%-12s%-12s", usuarioReg.id, usuarioReg.nombreCompleto, usuarioReg.username, tipoUsuario, "Activo");
+          printf("\n%-10d%-30s%-20s%-12s%-12s", usuarioReg.id, usuarioReg.nombreCompleto, usuarioReg.username, tipoUsuario, "Activo");
         } else {
-          printf("\n%-10d%-20s%-20s%-12s", usuarioReg.id, usuarioReg.nombreCompleto, usuarioReg.username, tipoUsuario);
+          printf("\n%-10d%-30s%-20s%-12s", usuarioReg.id, usuarioReg.nombreCompleto, usuarioReg.username, tipoUsuario);
         }
       } else {
         if (mostrarTodos) {
-          printf("\n%-10d%-20s%-20s%-12s%-12s", usuarioReg.id, usuarioReg.nombreCompleto, usuarioReg.username, tipoUsuario, "Inactivo");
+          printf("\n%-10d%-30s%-20s%-12s%-12s", usuarioReg.id, usuarioReg.nombreCompleto, usuarioReg.username, tipoUsuario, "Inactivo");
         }
       }
     }
