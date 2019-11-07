@@ -57,7 +57,7 @@ void cargarDesdeArchivo(usuario loggedUser, char *archivoTexto, tipoEntidad tEnt
   struct materia materiaReg;
   struct usuario usuarioReg;
   struct materiaProfesor materiaProfesorReg;
-  struct materiaEstudiante materiaEstudianteReg;
+  struct materiaAlumno materiaAlumnoReg;
 
   char *token;
   char line[80];
@@ -69,11 +69,11 @@ void cargarDesdeArchivo(usuario loggedUser, char *archivoTexto, tipoEntidad tEnt
     strcpy(archivoDb, MATERIAS_DAT);
   if (tEntidad == MATERIA_PROFESOR)
     strcpy(archivoDb, MATERIA_PROFESOR_DAT);
-  if (tEntidad == MATERIA_ESTUDIANTE)
-    strcpy(archivoDb, MATERIA_ESTUDIANTE_DAT);
+  if (tEntidad == MATERIA_ALUMNO)
+    strcpy(archivoDb, MATERIA_ALUMNO_DAT);
 
   // Campos de los registros
-  int id, idMateria, idProfesor, idEstudiante;
+  int id, idMateria, idProfesor, idAlumno;
   int tipo, estado;
   char nombre[30];
 
@@ -150,17 +150,17 @@ void cargarDesdeArchivo(usuario loggedUser, char *archivoTexto, tipoEntidad tEnt
       fwrite(&materiaProfesorReg, sizeof(materiaProfesorReg), 1, dbFp);
     }
     // Parseo la linea segun tipo de entidad
-    if (tEntidad == MATERIA_ESTUDIANTE) {
-      materiaEstudianteReg.id = id;
+    if (tEntidad == MATERIA_ALUMNO) {
+      materiaAlumnoReg.id = id;
 
       token = strtok(NULL, ",");
-      materiaEstudianteReg.idMateria = atoi(token);
+      materiaAlumnoReg.idMateria = atoi(token);
 
       token = strtok(NULL, ",");
-      materiaEstudianteReg.idEstudiante = atoi(token);
+      materiaAlumnoReg.idAlumno = atoi(token);
 
-      strcpy(nombreTabla, "materia_estudiante");
-      fwrite(&materiaEstudianteReg, sizeof(materiaEstudianteReg), 1, dbFp);
+      strcpy(nombreTabla, "materia_alumno");
+      fwrite(&materiaAlumnoReg, sizeof(materiaAlumnoReg), 1, dbFp);
     }
   };
 

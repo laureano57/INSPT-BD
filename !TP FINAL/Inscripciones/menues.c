@@ -83,6 +83,8 @@ void menuAdmin(usuario loggedUser) {
     printf("[3] Administrar alumnos\n");
     printf("[4] Cargar usuarios desde archivo\n");
     printf("[5] Cargar materias desde archivo\n");
+    printf("[6] Cargar materia_alumno desde archivo\n");
+    printf("[7] Cargar materia_profesor desde archivo\n");
     printf("[0] Salir\n");
     scanf("%d", &opt);
     clearStdin();
@@ -112,6 +114,22 @@ void menuAdmin(usuario loggedUser) {
       printf("Ingrese el nombre del archivo: ");
       getstring(fileName, sizeof fileName);
       tEntidad = MATERIA;
+      cargarDesdeArchivo(loggedUser, fileName, tEntidad);
+      break;
+    case 6:
+      system(CLEAR);
+      printf("####  Cargar materia_alumno desde archivo  ####\n");
+      printf("Ingrese el nombre del archivo: ");
+      getstring(fileName, sizeof fileName);
+      tEntidad = MATERIA_ALUMNO;
+      cargarDesdeArchivo(loggedUser, fileName, tEntidad);
+      break;
+    case 7:
+      system(CLEAR);
+      printf("####  Cargar materia_profesor desde archivo  ####\n");
+      printf("Ingrese el nombre del archivo: ");
+      getstring(fileName, sizeof fileName);
+      tEntidad = MATERIA_PROFESOR;
       cargarDesdeArchivo(loggedUser, fileName, tEntidad);
       break;
     default:

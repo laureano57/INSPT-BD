@@ -69,3 +69,28 @@ void usuariosListar(tipoUsuario tUsuario, int mostrarTodos) {
 
   fclose(fp);
 }
+
+int seleccionarUsuario(tipoUsuario tipo) {
+  int idUsr;
+
+  // Lista solo usuarios activos
+  usuariosListar(tipo, 0);
+
+  printf("\n\nIngrese el ID de un usuario: ");
+  scanf("%d", &idUsr);
+  clearStdin();
+
+  return idUsr;
+}
+
+int seleccionarMateria() {
+  int idMateria;
+
+  materiasListar();
+
+  printf("\n\nIngrese el ID de una materia: ");
+  scanf("%d", &idMateria);
+  clearStdin();
+
+  return idMateria;
+}

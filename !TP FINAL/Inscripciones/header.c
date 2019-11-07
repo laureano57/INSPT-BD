@@ -23,4 +23,4 @@
 #define USUARIOS_DAT "data/usuarios.dat"
 #define MATERIAS_DAT "data/materias.dat"
 #define MATERIA_PROFESOR_DAT "data/materia_profesor.dat"
-#define MATERIA_ESTUDIANTE_DAT "data/materia_estudiante.dat"
+#define MATERIA_ALUMNO_DAT "data/materia_alumno.dat"

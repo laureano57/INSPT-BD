@@ -104,7 +104,7 @@ void usuarioEditar(usuario loggedUser, tipoUsuario tipoUsr) {
 
   while (fread(&usuarioReg, sizeof(usuarioReg), 1, dbFp)) {
     if (usuarioReg.id == idUsr && usuarioReg.tipo == tipoUsr) {
-      operacion = editarUsuarioSelected(&usuarioReg);
+      operacion = usuarioEditarSelected(&usuarioReg);
 
       if (operacion == 0) return;
 
@@ -167,7 +167,7 @@ void usuarioEditar(usuario loggedUser, tipoUsuario tipoUsr) {
   fclose(dbFp);
 }
 
-int editarUsuarioSelected(usuario *usr) {
+int usuarioEditarSelected(usuario *usr) {
   int estado, operacion;
   char aux[30];
 

@@ -6,8 +6,8 @@
 typedef enum { ADMIN, PROFESOR, ALUMNO } tipoUsuario;
 char *tipoUsrString[] = {"Admin", "Profesor", "Alumno"};
 
-typedef enum { MATERIA, USUARIO, MATERIA_PROFESOR, MATERIA_ESTUDIANTE } tipoEntidad;
-char *tipoEntidadString[] = {"materia", "usuario", "materia_profesor", "materia_estudiante"};
+typedef enum { MATERIA, USUARIO, MATERIA_PROFESOR, MATERIA_ALUMNO } tipoEntidad;
+char *tipoEntidadString[] = {"materia", "usuario", "materia_profesor", "materia_alumno"};
 
 // Registros
 typedef struct usuario {
@@ -31,8 +31,8 @@ typedef struct materiaProfesor {
   int idProfesor;
 } materiaProfesor;
 
-typedef struct materiaEstudiante {
+typedef struct materiaAlumno {
   int id;
   int idMateria;
-  int idEstudiante;
-} materiaEstudiante;
+  int idAlumno;
+} materiaAlumno;

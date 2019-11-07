@@ -26,7 +26,7 @@ void materiasListar();
 // abms.c
 void usuarioAlta();
 void usuarioEditar(usuario loggedUser, tipoUsuario tipoUsr);
-int editarUsuarioSelected(usuario *usr);
+int usuarioEditarSelected(usuario *usr);
 // void usuarioAsignarMateria(int idUsuario, int idMateria);
 // void usuarioDesasignarMateria(int idUsuario, int idMateria);
 // void materiaAlta();
@@ -34,5 +34,5 @@ int editarUsuarioSelected(usuario *usr);
 // void materiaEditar(int idMateria);
 
 // Listan las entidades y devuelven el ID de una de ellas
-// int seleccionarMateria();
-// int seleccionarUsuario(tipoUsuario tipo);
+int seleccionarMateria();
+int seleccionarUsuario(tipoUsuario tipo);
