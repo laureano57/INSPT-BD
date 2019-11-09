@@ -216,12 +216,12 @@ void login() {
 
   } else {
     // Caso contrario, iniciar sesion
-    printf("#############################################################################\n");
-    printf("##                         Sistema de inscripciones                        ##\n");
-    printf("##                              Iniciar sesion                             ##\n");
-    printf("#############################################################################\n");
-
     do {
+      printf("#############################################################################\n");
+      printf("##                         Sistema de inscripciones                        ##\n");
+      printf("##                              Iniciar sesion                             ##\n");
+      printf("#############################################################################\n");
+
       printf("\nUsuario: ");
       getstring(username, sizeof username);
 
@@ -257,4 +257,47 @@ void login() {
     menuProfesor(usr);
 
   return;
+}
+
+usuario seleccionarUsuario(tipoUsuario tipo) {
+  int idUsr;
+  usuario usr;
+  // Lista solo usuarios activos
+  usuariosListar(tipo, 0);
+
+  printf("\n\nIngrese el ID de un usuario: ");
+  scanf("%d", &idUsr);
+  clearStdin();
+  usr = getUsuarioById(idUsr, tipo);
+
+  return usr;
+}
+
+usuario getUsuarioById(int idUsr, tipoUsuario tipo) {
+  FILE *fp;
+  usuario usr;
+
+  fp = fopen(USUARIOS_DAT, "rb");
+  fread(&usr, sizeof(usr), 1, fp);
+  while(!feof(fp)) {
+    if (usr.id == idUsr && usr.tipo == tipo) {
+      fclose(fp);
+      return usr;
+    }
+    fread(&usr, sizeof(usr), 1, fp);
+  }
+  fclose(fp);
+  return usr;
+}
+
+int seleccionarMateria() {
+  int idMateria;
+
+  materiasListar();
+
+  printf("\n\nIngrese el ID de una materia: ");
+  scanf("%d", &idMateria);
+  clearStdin();
+
+  return idMateria;
 }
