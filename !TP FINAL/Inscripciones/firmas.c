@@ -8,8 +8,8 @@ void cargarDesdeArchivo(usuario loggedUser, char *archivoTexto, tipoEntidad tEnt
 void logger(usuario loggedUser, char *action);
 void login();
 // Listan las entidades y devuelven una de ellas
-// materia seleccionarMateria();
-// materia getMateriaById(int idMateria);
+materia seleccionarMateria();
+materia getMateriaById(int idMateria);
 usuario seleccionarUsuario(tipoUsuario tipo);
 usuario getUsuarioById(int idUsr, tipoUsuario tipo);
 
@@ -32,10 +32,10 @@ void materiasListar(int mostrarTodas);
 void usuarioAlta();
 void usuarioEditar(usuario loggedUser, tipoUsuario tipoUsr);
 int usuarioEditarSelected(usuario *usr);
-// void usuarioAsignarMateria(int idUsuario, int idMateria);
+void alumnoAsignarMateria(usuario loggedUser);
+void profesorAsignarMateria(usuario loggedUser);
 // void usuarioDesasignarMateria(int idUsuario, int idMateria);
 // void materiaAlta();
-// void materiaBaja(int idMateria);
 void materiaEditar(usuario loggedUser);
 int materiaEditarSelected(materia *mat);
 

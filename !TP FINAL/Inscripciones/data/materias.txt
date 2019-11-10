@@ -4,3 +4,5 @@
 4,Modelos discretos,1,
 5,Tecnicas digitales,1,
 6,Programacion 2,1,
+7,Seminario,1,
+8,Estadistica,1,

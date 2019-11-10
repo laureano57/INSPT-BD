@@ -24,9 +24,10 @@ void menuAlumno(usuario loggedUser) {
       system(CLEAR);
       usuarioConsultarMaterias(loggedUser, loggedUser);
       break;
-    // case 2:
-    //   usuarioAsignarMateria(int idUsuario, int idMateria)();
-    //   break;
+    case 2:
+      system(CLEAR);
+      alumnoAsignarMateria(loggedUser);
+      break;
     // case 3:
     //   usuarioDesasignarMateria();
     //   break;
@@ -237,9 +238,10 @@ void menuAdmProfesores(usuario loggedUser) {
       system(CLEAR);
       usuarioConsultarMaterias(loggedUser, profesorUsr);
       break;
-    // case 5:
-    //   usuarioAsignarMateria();
-    //   break;
+    case 5:
+      system(CLEAR);
+      profesorAsignarMateria(loggedUser);
+      break;
     // case 6:
     //   usuarioDesasignarMateria();
     //   break;
@@ -293,9 +295,10 @@ void menuAdmAlumnos(usuario loggedUser) {
       system(CLEAR);
       usuarioConsultarMaterias(loggedUser, alumnoUsr);
       break;
-    // case 5:
-    //   usuarioAsignarMateria();
-    //   break;
+    case 5:
+      system(CLEAR);
+      alumnoAsignarMateria(loggedUser);
+      break;
     // case 6:
     //   usuarioDesasignarMateria();
     //   break;

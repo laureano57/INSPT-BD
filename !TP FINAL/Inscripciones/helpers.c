@@ -264,11 +264,16 @@ usuario seleccionarUsuario(tipoUsuario tipo) {
   usuario usr;
   // Lista solo usuarios activos
   usuariosListar(tipo, 0);
-
-  printf("\n\nIngrese el ID de un usuario: ");
-  scanf("%d", &idUsr);
-  clearStdin();
-  usr = getUsuarioById(idUsr, tipo);
+  do {
+    printf("\n\nIngrese el ID de un usuario: ");
+    scanf("%d", &idUsr);
+    clearStdin();
+    usr = getUsuarioById(idUsr, tipo);
+    if (usr.id == -1) {
+      printf("Opcion invalida!");
+      getchar();
+    }
+  } while (usr.id == -1);
 
   return usr;
 }
@@ -287,37 +292,45 @@ usuario getUsuarioById(int idUsr, tipoUsuario tipo) {
     fread(&usr, sizeof(usr), 1, fp);
   }
   fclose(fp);
+  usr.id = -1;
   return usr;
 }
 
-// materia seleccionarMateria() {
-//   materia mat;
-//   int idMateria;
+materia seleccionarMateria() {
+  materia mat;
+  int idMateria;
 
-//   materiasListar(0);
+  materiasListar(0);
 
-//   printf("\n\nIngrese el ID de una materia: ");
-//   scanf("%d", &idMateria);
-//   clearStdin();
-//   mat = getMateriaById(idMateria);
+  do {
+    printf("\n\nIngrese el ID de una materia: ");
+    scanf("%d", &idMateria);
+    clearStdin();
+    mat = getMateriaById(idMateria);
+    if (mat.id == -1) {
+      printf("Opcion invalida!");
+      getchar();
+    }
+  } while (mat.id == -1);
 
-//   return mat;
-// }
+  return mat;
+}
 
-// materia getMateriaById(int idMateria) {
-//   FILE *fp;
-//   materia mat;
+materia getMateriaById(int idMateria) {
+  FILE *fp;
+  materia mat;
 
-//   fp = fopen(MATERIAS_DAT, "rb");
+  fp = fopen(MATERIAS_DAT, "rb");
 
-//   fread(&mat, sizeof(mat), 1, fp);
-//   while(!feof(fp)) {
-//     if (mat.id == idMateria) {
-//       fclose(fp);
-//       return mat;
-//     }
-//     fread(&mat, sizeof(mat), 1, fp);
-//   }
-//   fclose(fp);
-//   return mat;
-// }
+  fread(&mat, sizeof(mat), 1, fp);
+  while(!feof(fp)) {
+    if (mat.id == idMateria) {
+      fclose(fp);
+      return mat;
+    }
+    fread(&mat, sizeof(mat), 1, fp);
+  }
+  fclose(fp);
+  mat.id = -1;
+  return mat;
+}

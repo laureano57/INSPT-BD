@@ -327,3 +327,142 @@ int materiaEditarSelected(materia *mat) {
   }
 }
 
+// Menu Admin Alumnos / Menu Profesor
+void alumnoAsignarMateria(usuario loggedUser) {
+  FILE *fp;
+  int esAdmin, existe, maxId;
+  char logMessage[100];
+  char numStr[5];
+  materiaAlumno materiaAlumnoReg;
+  materia mat;
+  usuario usr;
+  fp = fopen(MATERIA_ALUMNO_DAT, "rb+");
+  esAdmin = (loggedUser.tipo == ADMIN);
+
+  // Si es para menu admin
+  if (esAdmin) {
+    // Lista usuarios para seleccionar uno sobre el cual operar
+    usr = seleccionarUsuario(ALUMNO);
+  }
+
+  // Lista las materias para seleccionar una
+  mat = seleccionarMateria();
+
+  while (fread(&materiaAlumnoReg, sizeof(materiaAlumnoReg), 1, fp)) {
+    if (materiaAlumnoReg.idAlumno == (esAdmin ? usr.id : loggedUser.id)
+        && materiaAlumnoReg.idMateria == mat.id) {
+      existe = 1;
+    }
+  }
+
+  if (!existe) {
+
+    // Obtiene el mayor id de la tabla
+    maxId = 0;
+    fseek(fp, 0, SEEK_SET);
+    while (fread(&materiaAlumnoReg, sizeof(materiaAlumnoReg), 1, fp)) {
+      if (materiaAlumnoReg.id > maxId) {
+        maxId = materiaAlumnoReg.id;
+      }
+    }
+    fseek(fp, 0, SEEK_END);
+
+    materiaAlumnoReg.id = maxId + 1;
+    materiaAlumnoReg.idAlumno = esAdmin ? usr.id : loggedUser.id;
+    materiaAlumnoReg.idMateria = mat.id;
+    fwrite(&materiaAlumnoReg, sizeof(materiaAlumnoReg), 1, fp);
+    fclose(fp);
+    printf("\nMateria asignada exitosamente");
+    getchar();
+  } else {
+    printf("La materia ya se encuentra asignada\n");
+    getchar();
+    fclose(fp);
+    return;
+  }
+
+  // Logs
+  if (esAdmin) {
+    strcpy(logMessage, "Se asigno la materia '");
+    strcat(logMessage, mat.nombre);
+    strcat(logMessage, "' al alumno '");
+    strcat(logMessage, usr.nombreCompleto);
+    strcat(logMessage, "' (ID: ");
+    sprintf(numStr, "%d", usr.id);
+    strcat(logMessage, numStr);
+    strcat(logMessage, ")");
+  } else {
+    strcpy(logMessage, "Se inscribio en la materia '");
+    strcat(logMessage, mat.nombre);
+    strcat(logMessage, "' (ID: ");
+    sprintf(numStr, "%d", mat.id);
+    strcat(logMessage, numStr);
+    strcat(logMessage, ")");
+  }
+  logger(loggedUser, logMessage);
+}
+
+// Menu Admin Profesores
+void profesorAsignarMateria(usuario loggedUser) {
+  FILE *fp;
+  materiaProfesor materiaProfesorReg;
+  materia mat;
+  usuario usr;
+  int estaAsignada = 0, maxId;
+  char logMessage[100];
+  char numStr[5];
+
+  fp = fopen(MATERIA_PROFESOR_DAT, "rb+");
+
+  // Lista los usuarios para seleccionar un profesor
+  usr = seleccionarUsuario(PROFESOR);
+
+  // Lista las materias para seleccionar una
+  mat = seleccionarMateria();
+
+  // Busco saber si la materia seleccionada ya está asignada a un profesor
+  while (fread(&materiaProfesorReg, sizeof(materiaProfesorReg), 1, fp)) {
+    if (materiaProfesorReg.idMateria == mat.id) {
+      estaAsignada = 1;
+    }
+  }
+
+  // Si no esta asignada
+  if (!estaAsignada) {
+
+    // Obtiene el mayor id de la tabla
+    maxId = 0;
+    fseek(fp, 0, SEEK_SET);
+    while (fread(&materiaProfesorReg, sizeof(materiaProfesorReg), 1, fp)) {
+      if (materiaProfesorReg.id > maxId) {
+        maxId = materiaProfesorReg.id;
+      }
+    }
+    fseek(fp, 0, SEEK_END);
+
+    // Cargo la nueva relacion
+    materiaProfesorReg.id = maxId + 1;
+    materiaProfesorReg.idProfesor = usr.id;
+    materiaProfesorReg.idMateria = mat.id;
+    fwrite(&materiaProfesorReg, sizeof(materiaProfesorReg), 1, fp);
+    fclose(fp);
+    printf("\nMateria asignada exitosamente");
+    getchar();
+  } else {
+    printf("La materia ya se encuentra asignada\n");
+    getchar();
+    fclose(fp);
+    return;
+  }
+
+  // Logs
+  strcpy(logMessage, "Se asigno la materia '");
+  strcat(logMessage, mat.nombre);
+  strcat(logMessage, "' al profesor '");
+  strcat(logMessage, usr.nombreCompleto);
+  strcat(logMessage, "' (ID: ");
+  sprintf(numStr, "%d", usr.id);
+  strcat(logMessage, numStr);
+  strcat(logMessage, ")");
+  logger(loggedUser, logMessage);
+}
