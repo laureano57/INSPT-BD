@@ -290,14 +290,34 @@ usuario getUsuarioById(int idUsr, tipoUsuario tipo) {
   return usr;
 }
 
-int seleccionarMateria() {
-  int idMateria;
+// materia seleccionarMateria() {
+//   materia mat;
+//   int idMateria;
 
-  materiasListar();
+//   materiasListar(0);
 
-  printf("\n\nIngrese el ID de una materia: ");
-  scanf("%d", &idMateria);
-  clearStdin();
+//   printf("\n\nIngrese el ID de una materia: ");
+//   scanf("%d", &idMateria);
+//   clearStdin();
+//   mat = getMateriaById(idMateria);
 
-  return idMateria;
-}
+//   return mat;
+// }
+
+// materia getMateriaById(int idMateria) {
+//   FILE *fp;
+//   materia mat;
+
+//   fp = fopen(MATERIAS_DAT, "rb");
+
+//   fread(&mat, sizeof(mat), 1, fp);
+//   while(!feof(fp)) {
+//     if (mat.id == idMateria) {
+//       fclose(fp);
+//       return mat;
+//     }
+//     fread(&mat, sizeof(mat), 1, fp);
+//   }
+//   fclose(fp);
+//   return mat;
+// }

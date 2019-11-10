@@ -2,7 +2,7 @@
 // ####                                                  Listados                                                  ####
 // ####################################################################################################################
 
-void materiasListar() {
+void materiasListar(int mostrarTodas) {
   materia materiaReg;
   FILE *fp;
   fp = fopen(MATERIAS_DAT, "rb");
@@ -13,20 +13,29 @@ void materiasListar() {
   printf("##                         Sistema de inscripciones                        ##\n");
   printf("##                             Materias cargadas                           ##\n");
   printf("#############################################################################\n");
-  printf("\n%-10s%-30s%-12s\n", "Id", "Nombre", "Estado");
+  if (mostrarTodas) {
+    printf("\n%-10s%-30s%-12s\n", "Id", "Nombre", "Estado");
+  } else {
+    printf("\n%-10s%-30s\n", "Id", "Nombre");
+  }
 
   fread(&materiaReg, sizeof(materiaReg), 1, fp);
   while (!feof(fp)) {
     if (materiaReg.estado == 1) {
-      printf("\n%-10d%-30s%-12s", materiaReg.id, materiaReg.nombre,"Activa");
+      if (mostrarTodas) {
+        printf("\n%-10d%-30s%-12s", materiaReg.id, materiaReg.nombre,"Activa");
+      } else {
+        printf("\n%-10d%-30s", materiaReg.id, materiaReg.nombre);
+      }
     } else {
-      printf("\n%-10d%-30s%-12s", materiaReg.id, materiaReg.nombre,"Inactiva");
+      if (mostrarTodas) {
+        printf("\n%-10d%-30s%-12s", materiaReg.id, materiaReg.nombre,"Inactiva");
+      }
     }
     fread(&materiaReg, sizeof(materiaReg), 1, fp);
   }
 
   fclose(fp);
-  getchar();
 }
 
 void usuariosListar(tipoUsuario tUsuario, int mostrarTodos) {

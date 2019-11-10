@@ -71,8 +71,8 @@ void usuarioAlta(usuario loggedUser, tipoUsuario tipoUsr) {
     logger(loggedUser, logMessage);
 
     printf("Desea seguir cargando usuarios?\n");
-    printf("[1] Seguir\n");
-    printf("[0] Salir\n\n");
+    printf("  [1] Seguir\n");
+    printf("  [0] Salir\n\n");
     printf("Opcion: ");
     scanf("%d", &opt);
     clearStdin();
@@ -173,11 +173,11 @@ int usuarioEditarSelected(usuario *usr) {
 
   do {
     printf("\nSeleccione una operacion: \n");
-    printf("[1] Editar nombre\n");
-    printf("[2] Editar username\n");
-    printf("[3] Editar password\n");
-    printf("[4] Cambiar estado\n");
-    printf("[0] Salir\n");
+    printf("  [1] Editar nombre\n");
+    printf("  [2] Editar username\n");
+    printf("  [3] Editar password\n");
+    printf("  [4] Cambiar estado\n");
+    printf("  [0] Salir\n");
     printf("Opcion: ");
     scanf("%d", &operacion);
     clearStdin();
@@ -206,8 +206,8 @@ int usuarioEditarSelected(usuario *usr) {
     case 4:
       do {
         printf("\nSeleccione una opcion: \n");
-        printf("[1] Activar usuario\n");
-        printf("[0] Desactivar usuario\n");
+        printf("  [1] Activar usuario\n");
+        printf("  [0] Desactivar usuario\n");
         scanf("%d", &estado);
         clearStdin();
       } while (estado < 0 || estado > 1);
@@ -218,3 +218,112 @@ int usuarioEditarSelected(usuario *usr) {
       return 0;
   }
 }
+
+void materiaEditar(usuario loggedUser) {
+  FILE *dbFp;
+  dbFp = fopen(MATERIAS_DAT, "rb+");
+  materia materiaReg;
+  int idMateria, operacion, existe = 0;
+  char logMessage[100];
+  char strNum[5];
+
+  system(CLEAR);
+  printf("#############################################################################\n");
+  printf("##                              Editar materias                            ##\n");
+
+  // Lista todas las materias
+  materiasListar(1);
+
+  printf("\n\nIngrese el ID de una materia: ");
+  scanf("%d", &idMateria);
+  clearStdin();
+
+  while (fread(&materiaReg, sizeof(materiaReg), 1, dbFp)) {
+    if (materiaReg.id == idMateria) {
+      operacion = materiaEditarSelected(&materiaReg);
+
+      if (operacion == 0) return;
+
+      existe = 1;
+      fseek(dbFp, -sizeof(materiaReg), SEEK_CUR);
+      fwrite(&materiaReg, sizeof(materiaReg), 1, dbFp);
+      break;
+    }
+  }
+
+  if (!existe) {
+    printf("\nEl id de materia ingresada no existe!");
+  } else {
+    system(CLEAR);
+    printf("#############################################################################\n");
+    printf("##                             Materia modificada                          ##\n");
+    printf("#############################################################################\n");
+    printf("\n\n%-5s%-30s%-15s\n", "Id", "Nombre", "Estado");
+    printf("\n%-5d%-30s%-15s", materiaReg.id, materiaReg.nombre, materiaReg.estado ? "Activo" : "Inactivo");
+
+    // Logs
+    strcpy(logMessage, "Id materia: ");
+    sprintf(strNum,"%d", materiaReg.id);
+    strcat(logMessage, strNum);
+    strcat(logMessage, " => Cambia el campo '");
+
+    switch (operacion) {
+      // Editar nombre
+      case 1:
+        strcat(logMessage, "Nombre' a '");
+        strcat(logMessage, materiaReg.nombre);
+        strcat(logMessage, "'");
+        break;
+      // Editar estado
+      case 2:
+        strcat(logMessage, "Estado' a '");
+        strcat(logMessage, materiaReg.estado ? "Activo" : "Inactivo");
+        strcat(logMessage, "'");
+        break;
+    }
+    logger(loggedUser, logMessage);
+  };
+
+  getchar();
+  fclose(dbFp);
+}
+
+int materiaEditarSelected(materia *mat) {
+  int estado, operacion;
+  char aux[30];
+
+  do {
+    printf("\nSeleccione una operacion: \n");
+    printf("  [1] Editar nombre\n");
+    printf("  [2] Cambiar estado\n");
+    printf("  [0] Salir\n");
+    printf("Opcion: ");
+    scanf("%d", &operacion);
+    clearStdin();
+    if (operacion == 0) return operacion;
+  } while (operacion < 0 || operacion > 2);
+
+  switch (operacion) {
+    case 1:
+      printf("\nIngrese el nuevo nombre de la materia: ");
+      getstring(aux, sizeof aux);
+      strcpy(mat->nombre, aux);
+      return operacion;
+      break;
+    case 2:
+      do {
+        printf("\nSeleccione una opcion: \n");
+        printf("  [1] Activar materia\n");
+        printf("  [0] Desactivar materia\n");
+        printf("Opcion: ");
+        scanf("%d", &estado);
+        clearStdin();
+      } while (estado < 0 || estado > 1);
+      mat->estado = estado;
+      return operacion;
+      break;
+    default:
+      return 0;
+  }
+}
+

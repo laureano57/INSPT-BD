@@ -33,9 +33,12 @@ void menuAlumno(usuario loggedUser) {
     default:
       printf("Opcion incorrecta!\n");
       printf("Por favor, seleccione una opcion valida\n");
+      getchar();
       break;
     }
   } while (opt != 0);
+  system(CLEAR);
+  printf("Saliendo...");
   return;
 }
 
@@ -66,9 +69,12 @@ void menuProfesor(usuario loggedUser) {
     default:
       printf("Opcion incorrecta!\n");
       printf("Por favor, seleccione una opcion valida\n");
+      getchar();
       break;
     }
   } while (opt != 0);
+  system(CLEAR);
+  printf("Saliendo...");
   return;
 }
 
@@ -140,9 +146,12 @@ void menuAdmin(usuario loggedUser) {
     default:
       printf("Opcion incorrecta!\n");
       printf("Por favor, seleccione una opcion valida\n");
+      getchar();
       break;
     }
   } while (opt != 0);
+  system(CLEAR);
+  printf("Saliendo...");
   return;
 }
 
@@ -166,20 +175,22 @@ void menuAdmMaterias(usuario loggedUser) {
     case 0:
       break;
     case 1:
-      materiasListar();
+      materiasListar(0);
+      getchar();
       break;
     // case 2:
     //   materiaAlta();
     //   break;
-    // case 3:
-    //   materiaEditar();
-    //   break;
+    case 3:
+      materiaEditar(loggedUser);
+      break;
     // case 4:
     //   materiaConsultarProfesor();
     //   break;
     default:
       printf("Opcion incorrecta!\n");
       printf("Por favor, seleccione una opcion valida\n");
+      getchar();
       break;
     }
   } while (opt != 0);
@@ -235,6 +246,7 @@ void menuAdmProfesores(usuario loggedUser) {
     default:
       printf("Opcion incorrecta!\n");
       printf("Por favor, seleccione una opcion valida\n");
+      getchar();
       break;
     }
   } while (opt != 0);
@@ -290,6 +302,7 @@ void menuAdmAlumnos(usuario loggedUser) {
     default:
       printf("Opcion incorrecta!\n");
       printf("Por favor, seleccione una opcion valida\n");
+      getchar();
       break;
     }
   } while (opt != 0);
