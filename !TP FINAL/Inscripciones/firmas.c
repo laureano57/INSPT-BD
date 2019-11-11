@@ -7,7 +7,7 @@ char *getstring(char *buf, size_t size);
 void cargarDesdeArchivo(usuario loggedUser, char *archivoTexto, tipoEntidad tEntidad);
 void logger(usuario loggedUser, char *action);
 void login();
-// Listan las entidades y devuelven una de ellas
+void crearDb();
 materia seleccionarMateria();
 materia getMateriaById(int idMateria);
 usuario seleccionarUsuario(tipoUsuario tipo);
@@ -25,17 +25,17 @@ void menuProfesor(usuario loggedUser);
 void usuariosListar(tipoUsuario tipo, int mostrarTodos);
 void usuarioConsultarMaterias(usuario loggedUser, usuario usr);
 void materiasListar(int mostrarTodas);
-// void materiaConsultarProfesor(int idMateria);
-// void materiaConsultarAlumnos(int idMateria);
+void materiaConsultarProfesor(usuario loggedUser, materia mat);
+void materiaConsultarAlumnos(usuario loggedUser, materia mat);
 
 // abms.c
-void usuarioAlta();
+void usuarioAlta(usuario loggedUser, tipoUsuario tipoUsr);
 void usuarioEditar(usuario loggedUser, tipoUsuario tipoUsr);
 int usuarioEditarSelected(usuario *usr);
 void alumnoAsignarMateria(usuario loggedUser);
 void profesorAsignarMateria(usuario loggedUser);
-// void usuarioDesasignarMateria(int idUsuario, int idMateria);
-// void materiaAlta();
+// void usuarioDesasignarMateria(usuario loggedUser, int idUsuario, int idMateria);
+void materiaAlta(usuario loggedUser);
 void materiaEditar(usuario loggedUser);
 int materiaEditarSelected(materia *mat);
 

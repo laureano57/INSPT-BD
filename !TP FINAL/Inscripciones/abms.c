@@ -219,6 +219,72 @@ int usuarioEditarSelected(usuario *usr) {
   }
 }
 
+void materiaAlta(usuario loggedUser) {
+  FILE *dbFp;
+  materia nuevaMat;
+  int opt, maxId;
+  char nombre[40];
+  char logMessage[100];
+
+  // Si no existe el archivo lo crea, sino lo abre para r/w
+  if ((dbFp = fopen(MATERIAS_DAT, "rb+")) == NULL) {
+    dbFp = fopen(MATERIAS_DAT, "wb+");
+  } else {
+    dbFp = fopen(MATERIAS_DAT, "rb+");
+  }
+
+  // Obtiene el mayor id de la tabla
+  maxId = 0;
+  fseek(dbFp, 0, SEEK_SET);
+  while (fread(&nuevaMat, sizeof(nuevaMat), 1, dbFp)) {
+    if (nuevaMat.id > maxId) {
+      maxId = nuevaMat.id;
+    }
+  }
+  fseek(dbFp, 0, SEEK_END);
+
+  system(CLEAR);
+
+  do {
+    printf("#############################################################################\n");
+    printf("##                            Alta de materias                             ##\n");
+    printf("#############################################################################\n");
+
+    // Incrementa el ID
+    maxId += 1;
+
+    // Setea ID
+    nuevaMat.id = maxId;
+
+    // Setea nombre
+    printf("\nIngrese el nombre de la materia: ");
+    getstring(nombre, sizeof nombre);
+    strcpy(nuevaMat.nombre, nombre);
+
+    // Setea estado activo
+    nuevaMat.estado = 1;
+
+    fwrite(&nuevaMat, sizeof(nuevaMat), 1, dbFp);
+
+    // Logs
+    strcpy(logMessage, "Se creo la materia '");
+    strcat(logMessage, nuevaMat.nombre);
+    strcat(logMessage, "'");
+    logger(loggedUser, logMessage);
+
+    printf("Desea seguir cargando materias?\n");
+    printf("  [1] Seguir\n");
+    printf("  [0] Salir\n\n");
+    printf("Opcion: ");
+    scanf("%d", &opt);
+    clearStdin();
+
+    system(CLEAR);
+  } while (opt != 0);
+
+  fclose(dbFp);
+}
+
 void materiaEditar(usuario loggedUser) {
   FILE *dbFp;
   dbFp = fopen(MATERIAS_DAT, "rb+");
@@ -337,12 +403,14 @@ void alumnoAsignarMateria(usuario loggedUser) {
   materia mat;
   usuario usr;
   fp = fopen(MATERIA_ALUMNO_DAT, "rb+");
+
   esAdmin = (loggedUser.tipo == ADMIN);
 
   // Si es para menu admin
   if (esAdmin) {
     // Lista usuarios para seleccionar uno sobre el cual operar
     usr = seleccionarUsuario(ALUMNO);
+    if (usr.id == -1) return;
   }
 
   // Lista las materias para seleccionar una
@@ -416,9 +484,11 @@ void profesorAsignarMateria(usuario loggedUser) {
 
   // Lista los usuarios para seleccionar un profesor
   usr = seleccionarUsuario(PROFESOR);
+  if (usr.id == -1) return;
 
   // Lista las materias para seleccionar una
   mat = seleccionarMateria();
+  if (mat.id == -1) return;
 
   // Busco saber si la materia seleccionada ya está asignada a un profesor
   while (fread(&materiaProfesorReg, sizeof(materiaProfesorReg), 1, fp)) {

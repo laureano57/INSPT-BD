@@ -194,6 +194,8 @@ void login() {
   dbFp = fopen(USUARIOS_DAT, "rb");
   if (dbFp == NULL) {
     // Si devuelve null, inicializo el sistema
+    crearDb();
+
     printf("#############################################################################\n");
     printf("##                         Sistema de inscripciones                        ##\n");
     printf("##                           Inicializar sistema                           ##\n");
@@ -213,6 +215,7 @@ void login() {
 
     dbFp = fopen(USUARIOS_DAT, "wb+");
     fwrite(&usr, sizeof(usr), 1, dbFp);
+    fclose(dbFp);
 
   } else {
     // Caso contrario, iniciar sesion
@@ -243,9 +246,8 @@ void login() {
         system(CLEAR);
       }
     } while (existe == 0);
+    fclose(dbFp);
   }
-
-  fclose(dbFp);
 
   printf("\nBienvenido, %s", usr.nombreCompleto);
   getchar();
@@ -259,15 +261,29 @@ void login() {
   return;
 }
 
+// Crea todos los archivos .dat al inicializar
+void crearDb() {
+  FILE *fp;
+  fp = fopen(MATERIAS_DAT, "wb+"); fclose(fp);
+  fp = fopen(USUARIOS_DAT, "wb+"); fclose(fp);
+  fp = fopen(MATERIA_PROFESOR_DAT, "wb+"); fclose(fp);
+  fp = fopen(MATERIA_ALUMNO_DAT, "wb+"); fclose(fp);
+}
+
 usuario seleccionarUsuario(tipoUsuario tipo) {
   int idUsr;
   usuario usr;
   // Lista solo usuarios activos
   usuariosListar(tipo, 0);
   do {
-    printf("\n\nIngrese el ID de un usuario: ");
+    printf("\n\nIngrese el ID de un usuario (O pulse [0] para salir)");
+    printf("\nId: ");
     scanf("%d", &idUsr);
     clearStdin();
+    if (idUsr == 0) {
+      usr.id = -1;
+      break;
+    }
     usr = getUsuarioById(idUsr, tipo);
     if (usr.id == -1) {
       printf("Opcion invalida!");
@@ -283,13 +299,11 @@ usuario getUsuarioById(int idUsr, tipoUsuario tipo) {
   usuario usr;
 
   fp = fopen(USUARIOS_DAT, "rb");
-  fread(&usr, sizeof(usr), 1, fp);
-  while(!feof(fp)) {
+  while(fread(&usr, sizeof(usr), 1, fp)) {
     if (usr.id == idUsr && usr.tipo == tipo) {
       fclose(fp);
       return usr;
     }
-    fread(&usr, sizeof(usr), 1, fp);
   }
   fclose(fp);
   usr.id = -1;
@@ -303,9 +317,14 @@ materia seleccionarMateria() {
   materiasListar(0);
 
   do {
-    printf("\n\nIngrese el ID de una materia: ");
+    printf("\n\nIngrese el ID de una materia (O pulse [0] para salir)");
+    printf("\nId: ");
     scanf("%d", &idMateria);
     clearStdin();
+    if (idMateria == 0) {
+      mat.id = -1;
+      break;
+    }
     mat = getMateriaById(idMateria);
     if (mat.id == -1) {
       printf("Opcion invalida!");
@@ -322,14 +341,13 @@ materia getMateriaById(int idMateria) {
 
   fp = fopen(MATERIAS_DAT, "rb");
 
-  fread(&mat, sizeof(mat), 1, fp);
-  while(!feof(fp)) {
+  while(fread(&mat, sizeof(mat), 1, fp)) {
     if (mat.id == idMateria) {
       fclose(fp);
       return mat;
     }
-    fread(&mat, sizeof(mat), 1, fp);
   }
+
   fclose(fp);
   mat.id = -1;
   return mat;

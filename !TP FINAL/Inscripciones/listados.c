@@ -19,8 +19,7 @@ void materiasListar(int mostrarTodas) {
     printf("\n%-10s%-30s\n", "Id", "Nombre");
   }
 
-  fread(&materiaReg, sizeof(materiaReg), 1, fp);
-  while (!feof(fp)) {
+  while (fread(&materiaReg, sizeof(materiaReg), 1, fp)) {
     if (materiaReg.estado == 1) {
       if (mostrarTodas) {
         printf("\n%-10d%-30s%-12s", materiaReg.id, materiaReg.nombre,"Activa");
@@ -32,7 +31,6 @@ void materiasListar(int mostrarTodas) {
         printf("\n%-10d%-30s%-12s", materiaReg.id, materiaReg.nombre,"Inactiva");
       }
     }
-    fread(&materiaReg, sizeof(materiaReg), 1, fp);
   }
 
   fclose(fp);
@@ -53,8 +51,7 @@ void usuariosListar(tipoUsuario tUsuario, int mostrarTodos) {
     printf("\n%-10s%-30s%-20s%-12s\n", "Id", "Nombre", "Username", "Tipo");
   }
 
-  fread(&usuarioReg, sizeof(usuarioReg), 1, fp);
-  while (!feof(fp)) {
+  while (fread(&usuarioReg, sizeof(usuarioReg), 1, fp)) {
     if (usuarioReg.tipo == tUsuario) {
       if (usuarioReg.estado == 1) {
         if (mostrarTodos) {
@@ -68,7 +65,6 @@ void usuariosListar(tipoUsuario tUsuario, int mostrarTodos) {
         }
       }
     }
-    fread(&usuarioReg, sizeof(usuarioReg), 1, fp);
   }
 
   fclose(fp);
@@ -99,16 +95,14 @@ void usuarioConsultarMaterias(usuario loggedUser, usuario usr) {
   printf("\n%-10s%-30s%-20s\n", "Id", "Nombre", "Username");
   printf("%-10d%-30s%-20s\n\n", usr.id, usr.nombreCompleto, usr.username);
 
-  fread(&materiaReg, sizeof(materiaReg), 1, materiaFp);
   // Por cada materia...
-  while (!feof(materiaFp)) {
+  while (fread(&materiaReg, sizeof(materiaReg), 1, materiaFp)) {
     // ...que este activa
     if (materiaReg.estado == 1) {
       // Si es un profesor
       if (usr.tipo == PROFESOR) {
-        fread(&materiaProfesorReg, sizeof(materiaProfesorReg), 1, materiaUsuarioFp);
         // Recorro todas las relaciones materiaProfesor
-        while (!feof(materiaUsuarioFp)) {
+        while (fread(&materiaProfesorReg, sizeof(materiaProfesorReg), 1, materiaUsuarioFp)) {
           // Si coinciden el id de materia con el id de materia de la relacion y el id del usuario con el de la relacion
           if (materiaReg.id == materiaProfesorReg.idMateria && usr.id == materiaProfesorReg.idProfesor) {
             if (!tieneMaterias) printf("Materias:\n");
@@ -117,15 +111,13 @@ void usuarioConsultarMaterias(usuario loggedUser, usuario usr) {
             // Imprimo la materia
             printf("%d | %s\n", materiaReg.id, materiaReg.nombre);
           }
-        fread(&materiaProfesorReg, sizeof(materiaProfesorReg), 1, materiaUsuarioFp);
         }
         rewind(materiaUsuarioFp);
       }
       // Si es un alumno
       if (usr.tipo == ALUMNO) {
-        fread(&materiaAlumnoReg, sizeof(materiaAlumnoReg), 1, materiaUsuarioFp);
         // Recorro todas las relaciones materiaProfesor
-        while (!feof(materiaUsuarioFp)) {
+        while (fread(&materiaAlumnoReg, sizeof(materiaAlumnoReg), 1, materiaUsuarioFp)) {
           // Si coinciden el id de materia con el id de materia de la relacion y el id del usuario con el de la relacion
           if (materiaReg.id == materiaAlumnoReg.idMateria && usr.id == materiaAlumnoReg.idAlumno) {
             if (!tieneMaterias) printf("Materias:\n");
@@ -134,12 +126,10 @@ void usuarioConsultarMaterias(usuario loggedUser, usuario usr) {
             // Imprimo la materia
             printf("%d | %s\n", materiaReg.id, materiaReg.nombre);
           }
-        fread(&materiaAlumnoReg, sizeof(materiaAlumnoReg), 1, materiaUsuarioFp);
         }
         rewind(materiaUsuarioFp);
       }
     }
-    fread(&materiaReg, sizeof(materiaReg), 1, materiaFp);
   }
 
   if (!tieneMaterias) printf("No se encontraron materias asignadas!");
@@ -159,4 +149,95 @@ void usuarioConsultarMaterias(usuario loggedUser, usuario usr) {
 
   fclose(materiaUsuarioFp);
   fclose(materiaFp);
+}
+
+void materiaConsultarProfesor(usuario loggedUser, materia mat) {
+  FILE *materiaProfesorFp, *profesorFp;
+  materiaProfesor materiaProfesorReg;
+  usuario profesor;
+  int tieneProfesor = 0;
+  char numStr[5];
+  char logMessage[120];
+
+  materiaProfesorFp = fopen(MATERIA_PROFESOR_DAT,"rb");
+  profesorFp = fopen(USUARIOS_DAT, "rb");
+
+  rewind(profesorFp);
+
+  printf("#############################################################################\n");
+  printf("##                            Profesor asignado                            ##\n");
+  printf("#############################################################################\n");
+  printf("\nMateria: %d - %s", mat.id, mat.nombre);
+
+  // Por cada materia/profesor
+  while (fread(&materiaProfesorReg, sizeof(materiaProfesor), 1, materiaProfesorFp)) {
+    if (mat.id == materiaProfesorReg.idMateria) {
+      if (!tieneProfesor) printf("\n\n%-10s%-30s%-20s\n", "Id", "Nombre", "Username");
+      tieneProfesor = 1;
+      profesor = getUsuarioById(materiaProfesorReg.idProfesor, PROFESOR);
+      printf("%-10d%-30s%-20s\n", profesor.id, profesor.nombreCompleto, profesor.username);
+      break;
+    }
+  }
+
+  if (!tieneProfesor) printf("\n\nLa materia seleccionada no tiene un profesor designado");
+
+  // Logger
+  strcpy(logMessage, "Se consulto el profesor designado de la materia '");
+  strcat(logMessage, mat.nombre);
+  strcat(logMessage, "' (ID: ");
+  sprintf(numStr, "%d", mat.id);
+  strcat(logMessage, numStr);
+  strcat(logMessage, ")");
+  logger(loggedUser, logMessage);
+
+  fclose(materiaProfesorFp);
+  fclose(profesorFp);
+
+  getchar();
+}
+
+void materiaConsultarAlumnos(usuario loggedUser, materia mat) {
+  FILE *materiaAlumnoFp, *alumnoFp;
+  materiaAlumno materiaAlumnoReg;
+  usuario alumno;
+  int tieneMaterias = 0;
+  char numStr[5];
+  char logMessage[120];
+
+  materiaAlumnoFp = fopen(MATERIA_ALUMNO_DAT,"rb");
+  alumnoFp = fopen(USUARIOS_DAT, "rb");
+
+  rewind(alumnoFp);
+
+  printf("#############################################################################\n");
+  printf("##                            Alumnos inscriptos                           ##\n");
+  printf("#############################################################################\n");
+  printf("\nMateria: %d - %s", mat.id, mat.nombre);
+
+  // Por cada materia/alumno
+  while (fread(&materiaAlumnoReg, sizeof(materiaAlumno), 1, materiaAlumnoFp)) {
+    if (mat.id == materiaAlumnoReg.idMateria) {
+      if (tieneMaterias == 0) printf("\n\n%-10s%-30s%-20s\n", "Id", "Nombre", "Username");
+      tieneMaterias = 1;
+      alumno = getUsuarioById(materiaAlumnoReg.idAlumno, ALUMNO);
+      printf("%-10d%-30s%-20s\n", alumno.id, alumno.nombreCompleto, alumno.username);
+    }
+  }
+
+  if (!tieneMaterias) printf("\n\nLa materia seleccionada no posee alumnos inscriptos");
+
+  // Logger
+  strcpy(logMessage, "Se listaron los alumnos inscriptos en la materia '");
+  strcat(logMessage, mat.nombre);
+  strcat(logMessage, "' (ID: ");
+  sprintf(numStr, "%d", mat.id);
+  strcat(logMessage, numStr);
+  strcat(logMessage, ")");
+  logger(loggedUser, logMessage);
+
+  fclose(materiaAlumnoFp);
+  fclose(alumnoFp);
+
+  getchar();
 }

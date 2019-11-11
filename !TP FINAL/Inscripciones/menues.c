@@ -64,9 +64,9 @@ void menuProfesor(usuario loggedUser) {
       system(CLEAR);
       usuarioConsultarMaterias(loggedUser, loggedUser);
       break;
-    // case 2:
-    //   materiaConsultarAlumnos(int idMateria);
-    //   break;
+    case 2:
+      // materiaConsultarUsuarios(int idMateria);
+      break;
     default:
       printf("Opcion incorrecta!\n");
       printf("Por favor, seleccione una opcion valida\n");
@@ -158,6 +158,7 @@ void menuAdmin(usuario loggedUser) {
 
 void menuAdmMaterias(usuario loggedUser) {
   int opt;
+  materia mat;
   do {
     system(CLEAR);
     printf("#############################################################################\n");
@@ -168,6 +169,7 @@ void menuAdmMaterias(usuario loggedUser) {
     printf("[2] Alta de materias\n");
     printf("[3] Editar una materia\n");
     printf("[4] Consultar profesor asignado a una materia\n");
+    printf("[5] Consultar alumnos inscriptos a una materia\n");
     printf("[0] Volver\n");
     printf("\nOpcion: ");
     scanf("%d", &opt);
@@ -179,15 +181,24 @@ void menuAdmMaterias(usuario loggedUser) {
       materiasListar(0);
       getchar();
       break;
-    // case 2:
-    //   materiaAlta();
-    //   break;
+    case 2:
+      materiaAlta(loggedUser);
+      break;
     case 3:
       materiaEditar(loggedUser);
       break;
-    // case 4:
-    //   materiaConsultarProfesor();
-    //   break;
+    case 4:
+      mat = seleccionarMateria();
+      if (mat.id == -1) break;
+      system(CLEAR);
+      materiaConsultarProfesor(loggedUser, mat);
+      break;
+    case 5:
+      mat = seleccionarMateria();
+      if (mat.id == -1) break;
+      system(CLEAR);
+      materiaConsultarAlumnos(loggedUser, mat);
+      break;
     default:
       printf("Opcion incorrecta!\n");
       printf("Por favor, seleccione una opcion valida\n");
@@ -235,6 +246,7 @@ void menuAdmProfesores(usuario loggedUser) {
     case 4:
       system(CLEAR);
       profesorUsr = seleccionarUsuario(PROFESOR);
+      if (profesorUsr.id == -1) break;
       system(CLEAR);
       usuarioConsultarMaterias(loggedUser, profesorUsr);
       break;
@@ -292,6 +304,7 @@ void menuAdmAlumnos(usuario loggedUser) {
     case 4:
       system(CLEAR);
       alumnoUsr = seleccionarUsuario(ALUMNO);
+      if (alumnoUsr.id == -1) break;
       system(CLEAR);
       usuarioConsultarMaterias(loggedUser, alumnoUsr);
       break;
