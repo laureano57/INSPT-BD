@@ -65,7 +65,8 @@ void menuProfesor(usuario loggedUser) {
       usuarioConsultarMaterias(loggedUser, loggedUser);
       break;
     case 2:
-      // materiaConsultarUsuarios(int idMateria);
+      system(CLEAR);
+      profesorConsultarAlumnosMateria(loggedUser);
       break;
     default:
       printf("Opcion incorrecta!\n");

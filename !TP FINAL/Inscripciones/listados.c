@@ -241,3 +241,83 @@ void materiaConsultarAlumnos(usuario loggedUser, materia mat) {
 
   getchar();
 }
+
+void profesorConsultarAlumnosMateria(usuario loggedUser) {
+  FILE *materiaUsuarioFp, *materiaFp;
+  materia materiaReg, materiaSelected;
+  materiaProfesor materiaProfesorReg;
+  int tieneMaterias = 0, opt, materiaEncontrada = 0;
+  char logMessage[100];
+
+  materiaFp = fopen(MATERIAS_DAT, "rb");
+  materiaUsuarioFp = fopen(MATERIA_PROFESOR_DAT,"rb");
+
+  rewind(materiaUsuarioFp);
+
+  printf("#############################################################################\n");
+  printf("##                        Listar alumnos por materia                       ##\n");
+  printf("#############################################################################\n");
+
+  // Por cada materia...
+  while (fread(&materiaReg, sizeof(materiaReg), 1, materiaFp)) {
+    // ...que este activa
+    if (materiaReg.estado == 1) {
+      // Recorro todas las relaciones materiaProfesor
+      while (fread(&materiaProfesorReg, sizeof(materiaProfesorReg), 1, materiaUsuarioFp)) {
+        // Si coinciden el id de materia con el id de materia de la relacion y el id del usuario con el de la relacion
+        if (materiaReg.id == materiaProfesorReg.idMateria && loggedUser.id == materiaProfesorReg.idProfesor) {
+          if (!tieneMaterias) printf("Seleccione una materia o ingrese 0 para salir:\n");
+          // Encontro una materia al menos
+          tieneMaterias = 1;
+          // Imprimo la materia
+          printf("%d | %s\n", materiaReg.id, materiaReg.nombre);
+        }
+      }
+      rewind(materiaUsuarioFp);
+    }
+  }
+
+  if (!tieneMaterias) {
+    printf("No se encontraron materias asignadas!");
+    return;
+  }
+
+  rewind(materiaFp);
+  rewind(materiaUsuarioFp);
+
+  do {
+    printf("\nOpcion: ");
+    scanf("%d", &opt);
+    clearStdin();
+
+    if (opt == 0) return;
+
+    // Por cada materia...
+    while (fread(&materiaReg, sizeof(materiaReg), 1, materiaFp) && !materiaEncontrada) {
+      // ...que este activa
+      if (materiaReg.estado == 1) {
+        // Recorro todas las relaciones materiaProfesor
+        while (fread(&materiaProfesorReg, sizeof(materiaProfesorReg), 1, materiaUsuarioFp) && !materiaEncontrada) {
+          // Si coinciden el id de materia con el id de materia de la relacion y el id del usuario con el de la relacion
+          if (materiaReg.id == materiaProfesorReg.idMateria
+              && loggedUser.id == materiaProfesorReg.idProfesor
+              && opt == materiaReg.id) {
+             materiaEncontrada = 1;
+            break;
+          }
+        }
+        rewind(materiaUsuarioFp);
+      }
+      if (materiaEncontrada) break;
+    }
+    rewind(materiaFp);
+    if (!materiaEncontrada) printf("\nOpcion invalida!");
+  } while (!materiaEncontrada);
+
+  system(CLEAR);
+
+  materiaConsultarAlumnos(loggedUser, materiaReg);
+
+  fclose(materiaUsuarioFp);
+  fclose(materiaFp);
+}

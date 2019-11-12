@@ -27,6 +27,7 @@ void usuarioConsultarMaterias(usuario loggedUser, usuario usr);
 void materiasListar(int mostrarTodas);
 void materiaConsultarProfesor(usuario loggedUser, materia mat);
 void materiaConsultarAlumnos(usuario loggedUser, materia mat);
+void profesorConsultarAlumnosMateria(usuario loggedUser);
 
 // abms.c
 void usuarioAlta(usuario loggedUser, tipoUsuario tipoUsr);
