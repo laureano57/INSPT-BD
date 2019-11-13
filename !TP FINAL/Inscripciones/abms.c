@@ -96,7 +96,7 @@ void usuarioEditar(usuario loggedUser, tipoUsuario tipoUsr) {
   printf("##                              Editar usuarios                            ##\n");
 
   // Lista usuarios activos e inactivos
-  usuariosListar(tipoUsr, 1);
+  usuariosListar(loggedUser, tipoUsr, 1);
 
   printf("\n\nIngrese el ID de un usuario: ");
   scanf("%d", &idUsr);
@@ -298,7 +298,7 @@ void materiaEditar(usuario loggedUser) {
   printf("##                              Editar materias                            ##\n");
 
   // Lista todas las materias
-  materiasListar(1);
+  materiasListar(loggedUser, 1);
 
   printf("\n\nIngrese el ID de una materia: ");
   scanf("%d", &idMateria);
@@ -396,7 +396,7 @@ int materiaEditarSelected(materia *mat) {
 // Menu Admin Alumnos / Menu Profesor
 void alumnoAsignarMateria(usuario loggedUser) {
   FILE *fp;
-  int esAdmin, existe, maxId;
+  int esAdmin, existe = 0, maxId;
   char logMessage[100];
   char numStr[5];
   materiaAlumno materiaAlumnoReg;
@@ -409,12 +409,12 @@ void alumnoAsignarMateria(usuario loggedUser) {
   // Si es para menu admin
   if (esAdmin) {
     // Lista usuarios para seleccionar uno sobre el cual operar
-    usr = seleccionarUsuario(ALUMNO);
+    usr = seleccionarUsuario(loggedUser, ALUMNO);
     if (usr.id == -1) return;
   }
 
   // Lista las materias para seleccionar una
-  mat = seleccionarMateria();
+  mat = seleccionarMateria(loggedUser);
 
   while (fread(&materiaAlumnoReg, sizeof(materiaAlumnoReg), 1, fp)) {
     if (materiaAlumnoReg.idAlumno == (esAdmin ? usr.id : loggedUser.id)
@@ -485,11 +485,11 @@ void profesorAsignarMateria(usuario loggedUser) {
   fp = fopen(MATERIA_PROFESOR_DAT, "rb+");
 
   // Lista los usuarios para seleccionar un profesor
-  usr = seleccionarUsuario(PROFESOR);
+  usr = seleccionarUsuario(loggedUser, PROFESOR);
   if (usr.id == -1) return;
 
   // Lista las materias para seleccionar una
-  mat = seleccionarMateria();
+  mat = seleccionarMateria(loggedUser);
   if (mat.id == -1) return;
 
   // Busco saber si la materia seleccionada ya está asignada a un profesor
@@ -538,4 +538,102 @@ void profesorAsignarMateria(usuario loggedUser) {
   strcat(logMessage, numStr);
   strcat(logMessage, ")");
   logger(loggedUser, logMessage);
+}
+
+void usuarioDesasignarMateria(usuario loggedUser, usuario usr) {
+  FILE *materiaUsuarioFp, *materiaFp;
+  materia materiaReg;
+  materiaProfesor materiaProfesorReg;
+  materiaAlumno materiaAlumnoReg;
+  int tieneMaterias = 0, idMateria;
+  int materiaEncontrada = 0;
+  char logMessage[100];
+  char strNum[5];
+
+  materiaFp = fopen(MATERIAS_DAT, "rb");
+
+  if (usr.tipo == PROFESOR) {
+    materiaUsuarioFp = fopen(MATERIA_PROFESOR_DAT,"rb+");
+  } else if (usr.tipo == ALUMNO) {
+    materiaUsuarioFp = fopen(MATERIA_ALUMNO_DAT,"rb+");
+  }
+
+  tieneMaterias = usuarioConsultarMaterias(loggedUser, usr);
+
+  if (!tieneMaterias) return;
+
+  do {
+    printf("\nSeleccione una materia o ingrese 0 para salir: ");
+    scanf("%d", &idMateria);
+    clearStdin();
+
+    if (idMateria == 0) return;
+
+    rewind(materiaUsuarioFp);
+
+    if (usr.tipo == PROFESOR) {
+      // Recorro todas las relaciones materiaProfesor
+      while (fread(&materiaProfesorReg, sizeof(materiaProfesorReg), 1, materiaUsuarioFp)) {
+        // Si esta activa la relacion
+        if (materiaProfesorReg.estado) {
+          // Si coinciden el idMateria seleccionado con el id de materia de la relacion y el id del usuario con el de la relacion
+          if (idMateria == materiaProfesorReg.idMateria && usr.id == materiaProfesorReg.idProfesor) {
+            materiaProfesorReg.estado = 0;
+            fseek(materiaUsuarioFp, -sizeof(materiaProfesorReg), SEEK_CUR);
+            fwrite(&materiaProfesorReg, sizeof(materiaProfesorReg), 1, materiaUsuarioFp);
+            materiaEncontrada = 1;
+            break;
+          }
+        }
+      }
+      rewind(materiaUsuarioFp);
+    }
+    // Si es un alumno
+    if (usr.tipo == ALUMNO) {
+      // Recorro todas las relaciones materiaProfesor
+      while (fread(&materiaAlumnoReg, sizeof(materiaAlumnoReg), 1, materiaUsuarioFp)) {
+        // Si esta activa la relacion
+        if (materiaAlumnoReg.estado) {
+          // Si coinciden el id de materia con el id de materia de la relacion y el id del usuario con el de la relacion
+          if (idMateria == materiaAlumnoReg.idMateria && usr.id == materiaAlumnoReg.idAlumno) {
+            materiaAlumnoReg.estado = 0;
+            fseek(materiaUsuarioFp, -sizeof(materiaAlumnoReg), SEEK_CUR);
+            fwrite(&materiaAlumnoReg, sizeof(materiaAlumnoReg), 1, materiaUsuarioFp);
+            materiaEncontrada = 1;
+            break;
+          }
+        }
+      }
+      rewind(materiaUsuarioFp);
+    }
+    if (!materiaEncontrada) printf("\nOpcion invalida!");
+  } while (!materiaEncontrada);
+
+  printf("\nMateria desasignada exitosamente");
+  getchar();
+
+  // Logger
+  materiaReg = getMateriaById(idMateria);
+  if (loggedUser.id == usr.id) {
+    strcpy(logMessage, "Se des-asigno la materia '");
+    strcat(logMessage, materiaReg.nombre);
+    strcat(logMessage, "' (ID: ");
+    sprintf(strNum, "%d", materiaReg.id);
+    strcat(logMessage, strNum);
+    strcat(logMessage, ")");
+  } else {
+    strcpy(logMessage, "Se des-asigno la materia '");
+    strcat(logMessage, materiaReg.nombre);
+    strcat(logMessage, "' (ID: ");
+    sprintf(strNum, "%d", materiaReg.id);
+    strcat(logMessage, strNum);
+    strcat(logMessage, ") del usuario '");
+    strcat(logMessage, usr.username);
+    if (usr.tipo == PROFESOR) strcat(logMessage, "' (Profesor)");
+    if (usr.tipo == ALUMNO) strcat(logMessage, "' (Alumno)");
+  }
+  logger(loggedUser, logMessage);
+
+  fclose(materiaUsuarioFp);
+  fclose(materiaFp);
 }

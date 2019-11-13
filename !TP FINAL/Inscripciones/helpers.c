@@ -276,11 +276,11 @@ void crearDb() {
   fp = fopen(MATERIA_ALUMNO_DAT, "wb+"); fclose(fp);
 }
 
-usuario seleccionarUsuario(tipoUsuario tipo) {
+usuario seleccionarUsuario(usuario loggedUser, tipoUsuario tipo) {
   int idUsr;
   usuario usr;
   // Lista solo usuarios activos
-  usuariosListar(tipo, 0);
+  usuariosListar(loggedUser, tipo, 0);
   do {
     printf("\n\nIngrese el ID de un usuario (O pulse [0] para salir)");
     printf("\nId: ");
@@ -316,11 +316,11 @@ usuario getUsuarioById(int idUsr, tipoUsuario tipo) {
   return usr;
 }
 
-materia seleccionarMateria() {
+materia seleccionarMateria(usuario loggedUser) {
   materia mat;
   int idMateria;
 
-  materiasListar(0);
+  materiasListar(loggedUser, 0);
 
   do {
     printf("\n\nIngrese el ID de una materia (O pulse [0] para salir)");

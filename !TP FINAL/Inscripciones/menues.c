@@ -4,6 +4,7 @@
 
 void menuAlumno(usuario loggedUser) {
   int opt;
+  logger(loggedUser, "Inicia sesion");
   do {
     system(CLEAR);
     printf("#############################################################################\n");
@@ -23,14 +24,16 @@ void menuAlumno(usuario loggedUser) {
     case 1:
       system(CLEAR);
       usuarioConsultarMaterias(loggedUser, loggedUser);
+      getchar();
       break;
     case 2:
       system(CLEAR);
       alumnoAsignarMateria(loggedUser);
       break;
-    // case 3:
-    //   usuarioDesasignarMateria();
-    //   break;
+    case 3:
+      system(CLEAR);
+      usuarioDesasignarMateria(loggedUser, loggedUser);
+      break;
     default:
       printf("Opcion incorrecta!\n");
       printf("Por favor, seleccione una opcion valida\n");
@@ -39,12 +42,14 @@ void menuAlumno(usuario loggedUser) {
     }
   } while (opt != 0);
   system(CLEAR);
-  printf("Saliendo...");
+  logger(loggedUser, "Cierra sesion");
+  login();
   return;
 }
 
 void menuProfesor(usuario loggedUser) {
   int opt;
+  logger(loggedUser, "Inicia sesion");
   do {
     system(CLEAR);
     printf("#############################################################################\n");
@@ -63,6 +68,7 @@ void menuProfesor(usuario loggedUser) {
     case 1:
       system(CLEAR);
       usuarioConsultarMaterias(loggedUser, loggedUser);
+      getchar();
       break;
     case 2:
       system(CLEAR);
@@ -76,7 +82,8 @@ void menuProfesor(usuario loggedUser) {
     }
   } while (opt != 0);
   system(CLEAR);
-  printf("Saliendo...");
+  logger(loggedUser, "Cierra sesion");
+  login();
   return;
 }
 
@@ -84,6 +91,7 @@ void menuAdmin(usuario loggedUser) {
   int opt;
   char fileName[32];
   tipoEntidad tEntidad;
+  logger(loggedUser, "Inicia sesion");
   do {
     system(CLEAR);
     printf("#############################################################################\n");
@@ -153,7 +161,8 @@ void menuAdmin(usuario loggedUser) {
     }
   } while (opt != 0);
   system(CLEAR);
-  printf("Saliendo...");
+  logger(loggedUser, "Cierra sesion");
+  login();
   return;
 }
 
@@ -179,7 +188,7 @@ void menuAdmMaterias(usuario loggedUser) {
     case 0:
       break;
     case 1:
-      materiasListar(0);
+      materiasListar(loggedUser, 0);
       getchar();
       break;
     case 2:
@@ -189,13 +198,13 @@ void menuAdmMaterias(usuario loggedUser) {
       materiaEditar(loggedUser);
       break;
     case 4:
-      mat = seleccionarMateria();
+      mat = seleccionarMateria(loggedUser);
       if (mat.id == -1) break;
       system(CLEAR);
       materiaConsultarProfesor(loggedUser, mat);
       break;
     case 5:
-      mat = seleccionarMateria();
+      mat = seleccionarMateria(loggedUser);
       if (mat.id == -1) break;
       system(CLEAR);
       materiaConsultarAlumnos(loggedUser, mat);
@@ -235,7 +244,7 @@ void menuAdmProfesores(usuario loggedUser) {
     case 1:
       system(CLEAR);
       // Lista solo usuarios activos
-      usuariosListar(PROFESOR, 0);
+      usuariosListar(loggedUser, PROFESOR, 0);
       getchar();
       break;
     case 2:
@@ -246,18 +255,23 @@ void menuAdmProfesores(usuario loggedUser) {
       break;
     case 4:
       system(CLEAR);
-      profesorUsr = seleccionarUsuario(PROFESOR);
+      profesorUsr = seleccionarUsuario(loggedUser, PROFESOR);
       if (profesorUsr.id == -1) break;
       system(CLEAR);
       usuarioConsultarMaterias(loggedUser, profesorUsr);
+      getchar();
       break;
     case 5:
       system(CLEAR);
       profesorAsignarMateria(loggedUser);
       break;
-    // case 6:
-    //   usuarioDesasignarMateria();
-    //   break;
+    case 6:
+      system(CLEAR);
+      profesorUsr = seleccionarUsuario(loggedUser, PROFESOR);
+      if (profesorUsr.id == -1) break;
+      system(CLEAR);
+      usuarioDesasignarMateria(loggedUser, profesorUsr);
+      break;
     default:
       printf("Opcion incorrecta!\n");
       printf("Por favor, seleccione una opcion valida\n");
@@ -293,7 +307,7 @@ void menuAdmAlumnos(usuario loggedUser) {
     case 1:
       system(CLEAR);
       // Lista solo usuarios activos
-      usuariosListar(ALUMNO, 0);
+      usuariosListar(loggedUser, ALUMNO, 0);
       getchar();
       break;
     case 2:
@@ -304,18 +318,23 @@ void menuAdmAlumnos(usuario loggedUser) {
       break;
     case 4:
       system(CLEAR);
-      alumnoUsr = seleccionarUsuario(ALUMNO);
+      alumnoUsr = seleccionarUsuario(loggedUser, ALUMNO);
       if (alumnoUsr.id == -1) break;
       system(CLEAR);
       usuarioConsultarMaterias(loggedUser, alumnoUsr);
+      getchar();
       break;
     case 5:
       system(CLEAR);
       alumnoAsignarMateria(loggedUser);
       break;
-    // case 6:
-    //   usuarioDesasignarMateria();
-    //   break;
+    case 6:
+      system(CLEAR);
+      alumnoUsr = seleccionarUsuario(loggedUser, ALUMNO);
+      if (alumnoUsr.id == -1) break;
+      system(CLEAR);
+      usuarioDesasignarMateria(loggedUser, alumnoUsr);
+      break;
     default:
       printf("Opcion incorrecta!\n");
       printf("Por favor, seleccione una opcion valida\n");

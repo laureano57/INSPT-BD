@@ -2,7 +2,7 @@
 // ####                                                  Listados                                                  ####
 // ####################################################################################################################
 
-void materiasListar(int mostrarTodas) {
+void materiasListar(usuario loggedUser, int mostrarTodas) {
   materia materiaReg;
   FILE *fp;
   fp = fopen(MATERIAS_DAT, "rb");
@@ -33,10 +33,13 @@ void materiasListar(int mostrarTodas) {
     }
   }
 
+  // Logger
+  logger(loggedUser, "Se listaron las materias cargadas en el sistema");
+
   fclose(fp);
 }
 
-void usuariosListar(tipoUsuario tUsuario, int mostrarTodos) {
+void usuariosListar(usuario loggedUser, tipoUsuario tUsuario, int mostrarTodos) {
   usuario usuarioReg;
   FILE *fp;
   fp = fopen(USUARIOS_DAT, "rb");
@@ -67,10 +70,14 @@ void usuariosListar(tipoUsuario tUsuario, int mostrarTodos) {
     }
   }
 
+  // Logger
+  if (tUsuario == PROFESOR) logger(loggedUser, "Se listaron los profesores cargados en el sistema");
+  if (tUsuario == ALUMNO) logger(loggedUser, "Se listaron los alumnos cargados en el sistema");
+
   fclose(fp);
 }
 
-void usuarioConsultarMaterias(usuario loggedUser, usuario usr) {
+int usuarioConsultarMaterias(usuario loggedUser, usuario usr) {
   FILE *materiaUsuarioFp, *materiaFp;
   materia materiaReg;
   materiaProfesor materiaProfesorReg;
@@ -138,7 +145,10 @@ void usuarioConsultarMaterias(usuario loggedUser, usuario usr) {
     }
   }
 
-  if (!tieneMaterias) printf("No se encontraron materias asignadas!");
+  if (!tieneMaterias) {
+    printf("No se encontraron materias asignadas!");
+    getchar();
+  };
 
   // Logger
   if (loggedUser.id == usr.id) {
@@ -151,10 +161,10 @@ void usuarioConsultarMaterias(usuario loggedUser, usuario usr) {
   }
   logger(loggedUser, logMessage);
 
-  getchar();
-
   fclose(materiaUsuarioFp);
   fclose(materiaFp);
+
+  return tieneMaterias;
 }
 
 void materiaConsultarProfesor(usuario loggedUser, materia mat) {
