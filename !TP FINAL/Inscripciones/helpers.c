@@ -146,6 +146,9 @@ void cargarDesdeArchivo(usuario loggedUser, char *archivoTexto, tipoEntidad tEnt
       token = strtok(NULL, ",");
       materiaProfesorReg.idProfesor = atoi(token);
 
+      token = strtok(NULL, ",");
+      materiaProfesorReg.estado = atoi(token);
+
       strcpy(nombreTabla, "materia_profesor");
       fwrite(&materiaProfesorReg, sizeof(materiaProfesorReg), 1, dbFp);
     }
@@ -158,6 +161,9 @@ void cargarDesdeArchivo(usuario loggedUser, char *archivoTexto, tipoEntidad tEnt
 
       token = strtok(NULL, ",");
       materiaAlumnoReg.idAlumno = atoi(token);
+
+      token = strtok(NULL, ",");
+      materiaAlumnoReg.estado = atoi(token);
 
       strcpy(nombreTabla, "materia_alumno");
       fwrite(&materiaAlumnoReg, sizeof(materiaAlumnoReg), 1, dbFp);

@@ -29,10 +29,12 @@ typedef struct materiaProfesor {
   int id;
   int idMateria;
   int idProfesor;
+  int estado;
 } materiaProfesor;
 
 typedef struct materiaAlumno {
   int id;
   int idMateria;
   int idAlumno;
+  int estado;
 } materiaAlumno;

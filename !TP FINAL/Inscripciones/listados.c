@@ -103,13 +103,16 @@ void usuarioConsultarMaterias(usuario loggedUser, usuario usr) {
       if (usr.tipo == PROFESOR) {
         // Recorro todas las relaciones materiaProfesor
         while (fread(&materiaProfesorReg, sizeof(materiaProfesorReg), 1, materiaUsuarioFp)) {
-          // Si coinciden el id de materia con el id de materia de la relacion y el id del usuario con el de la relacion
-          if (materiaReg.id == materiaProfesorReg.idMateria && usr.id == materiaProfesorReg.idProfesor) {
-            if (!tieneMaterias) printf("Materias:\n");
-            // Encontro una materia al menos
-            tieneMaterias = 1;
-            // Imprimo la materia
-            printf("%d | %s\n", materiaReg.id, materiaReg.nombre);
+          // Si esta activa la relacion...
+          if (materiaProfesorReg.estado == 1) {
+            // Y si coinciden el id de materia con el id de materia de la relacion y el id del usuario con el de la relacion
+            if (materiaReg.id == materiaProfesorReg.idMateria && usr.id == materiaProfesorReg.idProfesor) {
+              if (!tieneMaterias) printf("Materias:\n");
+              // Encontro una materia al menos
+              tieneMaterias = 1;
+              // Imprimo la materia
+              printf("%d | %s\n", materiaReg.id, materiaReg.nombre);
+            }
           }
         }
         rewind(materiaUsuarioFp);
@@ -118,13 +121,16 @@ void usuarioConsultarMaterias(usuario loggedUser, usuario usr) {
       if (usr.tipo == ALUMNO) {
         // Recorro todas las relaciones materiaProfesor
         while (fread(&materiaAlumnoReg, sizeof(materiaAlumnoReg), 1, materiaUsuarioFp)) {
-          // Si coinciden el id de materia con el id de materia de la relacion y el id del usuario con el de la relacion
-          if (materiaReg.id == materiaAlumnoReg.idMateria && usr.id == materiaAlumnoReg.idAlumno) {
-            if (!tieneMaterias) printf("Materias:\n");
-            // Encontro una materia al menos
-            tieneMaterias = 1;
-            // Imprimo la materia
-            printf("%d | %s\n", materiaReg.id, materiaReg.nombre);
+          // Si la relacion esta activa
+          if (materiaAlumnoReg.estado) {
+            // Si coinciden el id de materia con el id de materia de la relacion y el id del usuario con el de la relacion
+            if (materiaReg.id == materiaAlumnoReg.idMateria && usr.id == materiaAlumnoReg.idAlumno) {
+              if (!tieneMaterias) printf("Materias:\n");
+              // Encontro una materia al menos
+              tieneMaterias = 1;
+              // Imprimo la materia
+              printf("%d | %s\n", materiaReg.id, materiaReg.nombre);
+            }
           }
         }
         rewind(materiaUsuarioFp);
@@ -171,7 +177,7 @@ void materiaConsultarProfesor(usuario loggedUser, materia mat) {
 
   // Por cada materia/profesor
   while (fread(&materiaProfesorReg, sizeof(materiaProfesor), 1, materiaProfesorFp)) {
-    if (mat.id == materiaProfesorReg.idMateria) {
+    if (mat.id == materiaProfesorReg.idMateria && materiaProfesorReg.estado) {
       if (!tieneProfesor) printf("\n\n%-10s%-30s%-20s\n", "Id", "Nombre", "Username");
       tieneProfesor = 1;
       profesor = getUsuarioById(materiaProfesorReg.idProfesor, PROFESOR);
@@ -217,7 +223,7 @@ void materiaConsultarAlumnos(usuario loggedUser, materia mat) {
 
   // Por cada materia/alumno
   while (fread(&materiaAlumnoReg, sizeof(materiaAlumno), 1, materiaAlumnoFp)) {
-    if (mat.id == materiaAlumnoReg.idMateria) {
+    if (mat.id == materiaAlumnoReg.idMateria && materiaAlumnoReg.estado) {
       if (tieneMaterias == 0) printf("\n\n%-10s%-30s%-20s\n", "Id", "Nombre", "Username");
       tieneMaterias = 1;
       alumno = getUsuarioById(materiaAlumnoReg.idAlumno, ALUMNO);
@@ -264,13 +270,16 @@ void profesorConsultarAlumnosMateria(usuario loggedUser) {
     if (materiaReg.estado == 1) {
       // Recorro todas las relaciones materiaProfesor
       while (fread(&materiaProfesorReg, sizeof(materiaProfesorReg), 1, materiaUsuarioFp)) {
-        // Si coinciden el id de materia con el id de materia de la relacion y el id del usuario con el de la relacion
-        if (materiaReg.id == materiaProfesorReg.idMateria && loggedUser.id == materiaProfesorReg.idProfesor) {
-          if (!tieneMaterias) printf("Seleccione una materia o ingrese 0 para salir:\n");
-          // Encontro una materia al menos
-          tieneMaterias = 1;
-          // Imprimo la materia
-          printf("%d | %s\n", materiaReg.id, materiaReg.nombre);
+        // Si la relacion esta activa
+        if (materiaProfesorReg.estado) {
+          // Si coinciden el id de materia con el id de materia de la relacion y el id del usuario con el de la relacion
+          if (materiaReg.id == materiaProfesorReg.idMateria && loggedUser.id == materiaProfesorReg.idProfesor) {
+            if (!tieneMaterias) printf("Seleccione una materia o ingrese 0 para salir:\n");
+            // Encontro una materia al menos
+            tieneMaterias = 1;
+            // Imprimo la materia
+            printf("%d | %s\n", materiaReg.id, materiaReg.nombre);
+          }
         }
       }
       rewind(materiaUsuarioFp);
@@ -300,6 +309,7 @@ void profesorConsultarAlumnosMateria(usuario loggedUser) {
         while (fread(&materiaProfesorReg, sizeof(materiaProfesorReg), 1, materiaUsuarioFp) && !materiaEncontrada) {
           // Si coinciden el id de materia con el id de materia de la relacion y el id del usuario con el de la relacion
           if (materiaReg.id == materiaProfesorReg.idMateria
+              && materiaProfesorReg.estado
               && loggedUser.id == materiaProfesorReg.idProfesor
               && opt == materiaReg.id) {
              materiaEncontrada = 1;

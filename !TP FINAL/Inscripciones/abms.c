@@ -418,7 +418,8 @@ void alumnoAsignarMateria(usuario loggedUser) {
 
   while (fread(&materiaAlumnoReg, sizeof(materiaAlumnoReg), 1, fp)) {
     if (materiaAlumnoReg.idAlumno == (esAdmin ? usr.id : loggedUser.id)
-        && materiaAlumnoReg.idMateria == mat.id) {
+        && materiaAlumnoReg.idMateria == mat.id
+        && materiaAlumnoReg.estado) {
       existe = 1;
     }
   }
@@ -438,6 +439,7 @@ void alumnoAsignarMateria(usuario loggedUser) {
     materiaAlumnoReg.id = maxId + 1;
     materiaAlumnoReg.idAlumno = esAdmin ? usr.id : loggedUser.id;
     materiaAlumnoReg.idMateria = mat.id;
+    materiaAlumnoReg.estado = 1;
     fwrite(&materiaAlumnoReg, sizeof(materiaAlumnoReg), 1, fp);
     fclose(fp);
     printf("\nMateria asignada exitosamente");
@@ -492,7 +494,7 @@ void profesorAsignarMateria(usuario loggedUser) {
 
   // Busco saber si la materia seleccionada ya está asignada a un profesor
   while (fread(&materiaProfesorReg, sizeof(materiaProfesorReg), 1, fp)) {
-    if (materiaProfesorReg.idMateria == mat.id) {
+    if (materiaProfesorReg.idMateria == mat.id && materiaProfesorReg.estado) {
       estaAsignada = 1;
     }
   }
@@ -514,6 +516,7 @@ void profesorAsignarMateria(usuario loggedUser) {
     materiaProfesorReg.id = maxId + 1;
     materiaProfesorReg.idProfesor = usr.id;
     materiaProfesorReg.idMateria = mat.id;
+    materiaProfesorReg.estado = 1;
     fwrite(&materiaProfesorReg, sizeof(materiaProfesorReg), 1, fp);
     fclose(fp);
     printf("\nMateria asignada exitosamente");
